@@ -1,0 +1,19 @@
+body{
+  background-color: #dad6d65d;
+}
+table {
+    width: 45%;
+    position: absolute;
+  }
+.container{
+  display: flexbox;
+  margin-left: 20%;
+}
+.mat-card{
+    text-align: -webkit-center;
+    list-style-position: inside;
+    inline-size: min-content;
+        margin-left: 49%;
+    position: absolute;
+    margin-top: 2%;
+}
