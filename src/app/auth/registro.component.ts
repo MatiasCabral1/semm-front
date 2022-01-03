@@ -15,6 +15,7 @@ export class RegistroComponent implements OnInit {
   nuevoUsuario!: NuevoUsuario;
   nombre!: string;
   nombreUsuario!: string;
+  codArea!: string;
   email!: string;
   password!: string;
   errMsj!: string;
@@ -34,7 +35,7 @@ export class RegistroComponent implements OnInit {
   }
 
   onRegister(): void {
-    this.nuevoUsuario = new NuevoUsuario(this.nombre, this.nombreUsuario, this.email, this.password);
+    this.nuevoUsuario = new NuevoUsuario(this.nombre, this.codArea + this.nombreUsuario, this.email, this.password);
     this.authService.nuevo(this.nuevoUsuario).subscribe(
       data => {
         /*this.toastr.success('Cuenta Creada', 'OK', {
@@ -44,15 +45,17 @@ export class RegistroComponent implements OnInit {
         this.router.navigate(['/login']);
       },
       err => {
+        console.log("error", err);
         Swal.fire({
           width: 350,
           icon: 'error',
           title: err.error.mensaje,
           showConfirmButton: false,
-          timer: 2500,
+          timer: 79500,
         })
       }
     );
   }
 
 }
+

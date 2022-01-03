@@ -23,10 +23,14 @@
                 <input type="text" name="nombre" id="nombre" class="form-control"
                 [(ngModel)]="nombre" required>
             </div>
-              <div class="form-group">
-                  <label for="nombreUsuario">Nombre de Usuario</label>
-                  <input type="text" name="nombreUsuario" id="nombreUsuario" class="form-control"
+              <div class="form-group-telefono">
+                  <label for="nombreUsuario">Telefono </label>
+                  <div class="telefono" style="display: flex; align-items: center;">
+                  0 <input style="width: 20%;  margin-right: 4%;" type="text" name="codArea" id="codArea" class="form-control" 
+                  [(ngModel)]="codArea" required>
+                  15 <input type="text" name="nombreUsuario" id="nombreUsuario" class="form-control"
                   [(ngModel)]="nombreUsuario" required>
+                </div>
               </div>
               <div class="form-group">
                   <label for="password">Contraseña</label>

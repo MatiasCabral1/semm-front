@@ -31,8 +31,18 @@ export class RegistrarPatenteComponent implements OnInit {
     if(this.validarExpresiones(this.numero)){
       console.log("cumple");
       this.usuarioPatente = new nuevaPatente(this.numero,this.tokenService.getUserName()!);
-      this.patenteService.create(this.numero,this.tokenService.getUserName()!).subscribe();
-      this.router.navigateByUrl("/listadoPatentes");
+      this.patenteService.create(this.numero,this.tokenService.getUserName()!).subscribe(data => {
+        this.router.navigateByUrl("/listadoPatentes");
+      },
+      err =>{
+        Swal.fire({
+          width: 350,
+          icon: 'error',
+          title: err.error.errors,
+          showConfirmButton: false,
+          timer: 2500,
+        })
+      }); 
     }
   }
 
