@@ -9,12 +9,14 @@
             <mat-card-title>Estacionamiento iniciado </mat-card-title>
             <mat-card-content>Recordatorio: Para iniciar un estacionamiento con otra patente primero debe finalizar el actual.</mat-card-content>
             <mat-card-actions>
-                <div style="display: list-item;">
-               Tiempo transcurrido: <br> {{time.hora}} : {{time.minutos}}<br>
+                <div >
+               Tiempo transcurrido: <br> {{time.hora + " "}}hs: {{time.minutos+ " "}}min<br>
                </div>
+               <div style="padding: 5%;">
+                Total a pagar: <br> ${{precio}}<br>
+                </div>
               <button  mat-flat-button color="primary" (click)= "finalizarEstacionamiento()" [disabled]="!estacionamientoOn"> 
                 Finalizar estacionamiento 
-                <mat-icon>add_shopping_cart</mat-icon>
               </button>
             </mat-card-actions>
           </mat-card>
@@ -47,7 +49,7 @@
         <ng-container matColumnDef="editar">
             <th mat-header-cell *matHeaderCellDef> </th>
             <td mat-cell *matCellDef="let j = index;">
-            <button mat-raised-button color="warn" style="background-color: darkorange;" focusable="false" (click)="clearInterval()">
+            <button mat-raised-button color="warn" style="background-color: darkorange;" focusable="false">
                 Editar
             </button>
             </td>
@@ -70,6 +72,7 @@
     </table>
 </div>
 </div>  
+
 </body>
 
     

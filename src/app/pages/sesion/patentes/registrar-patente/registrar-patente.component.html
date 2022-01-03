@@ -1,19 +1,30 @@
 <app-nav-bar></app-nav-bar>
-<p>Ingrese nueva patente a registrar</p>
+
 <body>
-    <form #f="ngForm"  (ngSubmit)="registrarPatente()" >
-        <div class="form-group">
-            <label for="numero">número de patente</label>
-            <input type="text" name="numero" id="numero" class="form-control"
-            [(ngModel)]="numero" required>
-        </div>
-        <div>
-            <button mat-raised-button color="warn" type="submit" style="background-color: darkolivegreen;" [disabled]="!f.valid">
-            Registrar patente
-         </button>
-            <button mat-raised-button color="warn" [routerLink]="['/listadoPatentes']" routerLinkActive="router-link-active"  style="background-color:brown" >
-            volver
-        </button></div>
-        
-    </form>
+    <div class="container d-flex justify-content-center">
+      <div class="card">
+          <div class="card-body">
+            <h1>Registro de nueva patente</h1>
+            <form #f="ngForm"  (ngSubmit)="registrarPatente()" >
+                <div class="form-group">
+                    <label for="numero">número de patente</label>
+                    <input type="text" name="numero" id="numero" class="form-control"
+                    [(ngModel)]="numero" required>
+                </div>
+                <div style="padding: 3px;">
+                    <button mat-raised-button color="warn" type="submit" style="background-color: darkolivegreen;" [disabled]="!f.valid">
+                    Registrar patente
+                 </button>
+                    <button mat-raised-button color="warn" [routerLink]="['/listadoPatentes']" routerLinkActive="router-link-active"  style="background-color:brown" >
+                    volver
+                </button>
+               
+            </div>    
+            </form>
+          </div>
+      </div>
+  </div>
+  <button mat-raised-button color="warn" (click)="validarExpresiones()"  style="background-color:brown" >
+    validar
+</button> 
 </body>

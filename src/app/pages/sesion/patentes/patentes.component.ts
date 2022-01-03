@@ -1,8 +1,10 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
+import { Ciudad } from 'src/app/models/Ciudad';
 import { Estacionamiento } from 'src/app/models/Estacionamiento';
 import { modelPatente } from 'src/app/models/modelPatente';
+import { CiudadService } from 'src/app/service/ciudad.service';
 import { estacionamientoService } from 'src/app/service/estacionamiento.service';
 import { PatenteService } from 'src/app/service/patente.service';
 import { TokenService } from 'src/app/service/token.service';
@@ -15,7 +17,9 @@ import Swal from 'sweetalert2';
   styleUrls: ['./patentes.component.scss']
 })
 export class PatentesComponent implements OnInit {
+  ciudad!:Ciudad;
   saldo!: any;
+  precio!: number;
   estacionamientoOn = false;
   estacionamiento!: Estacionamiento;
   time = {
@@ -32,12 +36,14 @@ export class PatentesComponent implements OnInit {
     private usuarioService: UsuarioService,
     private estacionamientoService: estacionamientoService,
     private tokenService: TokenService,
+    private ciudadService: CiudadService
     ) { }
 
   ngOnInit(): void {
     this.getPatentes();
     this.getSaldo();
-    this.getTiempo();
+    this.getTiempoYprecio();
+    this.getCiudad();
   }
 
   @ViewChild(MatTable) tabla1!: MatTable<modelPatente>;
@@ -56,12 +62,17 @@ export class PatentesComponent implements OnInit {
       // routerLink: ["/editar_servicio"],
     }
   }
-  
+
+  //obtenemos las patentes del usuario que inicio sesion.
   getPatentes():void{
     this.usuarioService.getPatentes().subscribe((data: any) =>{
       this.datos = data;
   })
   }
+
+  //verifica que se presione el boton "aceptar"
+  //si se presiona aceptar -> se verifica que el saldo de la cuenta del usuario alcance para el minimo de una hora.
+  //se crea un estacionamiento en la ddbb, 
   iniciarEstacionamiento(row: number):void{
     Swal.fire({
       title: 'Iniciando estacionamiento',
@@ -93,10 +104,11 @@ export class PatentesComponent implements OnInit {
 
       }
     })
-    
-    
-
   }
+  //muestra un aviso. 
+  //si se presiona aceptar entonces se debita el saldo de la cuenta del usuario.
+  //se vuelven a habilitar los botones de iniciar estacionamiento y se elimina el intervalo de "this.interval"
+  //se invoca a la funcion "finalizar estacionamiento" del backend.
   finalizarEstacionamiento():void{
     Swal.fire({
       title: 'Finalizando estacionamiento',
@@ -117,12 +129,13 @@ export class PatentesComponent implements OnInit {
     })
     
   }
-
-  getTiempo(){
+  //verificamos que haya una patente iniciada, si no hay ninguna iniciada se informa en la consola
+  //sino se setea el intervalo de invocacion de esta funcion cada 1 minuto.
+  getTiempoYprecio(){
     this.estacionamientoService.getEstado().subscribe((data: boolean) =>{
       if(data){
         clearInterval(this.interval);
-        this.interval = setInterval(()=> this.getTiempo(),60000)
+        this.interval = setInterval(()=> this.getTiempoYprecio(),60000)
         this.estacionamientoService.getTiempoTranscurrido().subscribe((data: Estacionamiento)=> {
           this.calcularHora(data.horaInicio.split(":")[0],data.horaInicio.split(":")[1]);
           this.estacionamientoOn= true;
@@ -133,26 +146,32 @@ export class PatentesComponent implements OnInit {
     });
    
   }
+  //obtenemos la cuenta corriente del usuario y seteamos nuestra variable "this.saldo" con "cuentaCorriente.saldo"
   getSaldo():void{
    this.usuarioService.getSaldo().subscribe((data: any) => {
       this.saldo = data.saldo})
     }
 
+      //calculo de la hora evitando que los minutos se pongan en negativo.
+      // falta verificar que la hora no se ponga en negativo.
     calcularHora(horaInicio:string, minInicio:string){
       let today = new Date();
+      console.log("cuenta: ",  (today.getHours() - +horaInicio));
+        
       if(today.getMinutes() - +minInicio < 0){
         this.time.minutos = 60 + (today.getMinutes() - +minInicio);
         this.time.hora = (today.getHours() - +horaInicio) - 1 ;
+        this.precio = this.ciudad.valorHora + (this.ciudad.valorHora*((today.getHours() - +horaInicio)-1));
+        
       }else{
         this.time.minutos = today.getMinutes() - +minInicio;
         this.time.hora = today.getHours() - +horaInicio;
+        this.precio = this.ciudad.valorHora + (this.ciudad.valorHora*(today.getHours() - +horaInicio));
       }
 
   }
-  clearInterval(){
-    clearInterval(this.interval);
-  }
-  
+
+  // alertas y notificaciones de sweetAlert2
   successNotification(){
     Swal.fire('Hi', 'We have been informed!', 'success')
   }
@@ -166,6 +185,13 @@ export class PatentesComponent implements OnInit {
       text: 'La patente seleccionada ya tiene un estacionamiento activo',
       icon: 'warning',
     })
+  }
+  ///
+
+  getCiudad(){
+    this.ciudadService.getAll().subscribe((data : any)=> {
+      this.ciudad = data[0];
+    });
   }
 
 }
