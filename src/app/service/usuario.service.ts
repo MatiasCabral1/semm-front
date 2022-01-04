@@ -30,4 +30,8 @@ export class UsuarioService {
   public getSaldo(): Observable<any>{
     return this.http.post<any>(this.url+'/getSaldo',this.username)
   }
+
+  public getDatos(username:string): Observable<any>{
+    return this.http.get<any>(this.url+'/getDatos/'+ username)
+  }
 }

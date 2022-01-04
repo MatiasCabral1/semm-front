@@ -89,7 +89,7 @@ export class PatentesComponent implements OnInit {
           this.errorNotification();
         }else{
           let today = new Date();
-          this.estacionamiento = new Estacionamiento(today.getHours().toString() + ':'+ today.getMinutes().toString(), true, this.datos[row].numero);
+          this.estacionamiento = new Estacionamiento(today.toString(), true, this.datos[row].numero);
           this.estacionamiento.username = this.tokenService.getUserName()!;
           //enviamos el estacionamiento-> si devuelve NULL entonces el estacionamiento no se pudo guardar
           // no se pudo guardar porque la patente ya se encuentra en un estacionamiento iniciado.
@@ -126,8 +126,7 @@ export class PatentesComponent implements OnInit {
         clearInterval(this.interval);
         window.location.reload();
       }
-    })
-    
+    }) 
   }
   //verificamos que haya una patente iniciada, si no hay ninguna iniciada se informa en la consola
   //sino se setea el intervalo de invocacion de esta funcion cada 1 minuto.
@@ -136,12 +135,15 @@ export class PatentesComponent implements OnInit {
       if(data){
         clearInterval(this.interval);
         this.interval = setInterval(()=> this.getTiempoYprecio(),60000)
-        this.estacionamientoService.getTiempoTranscurrido().subscribe((data: Estacionamiento)=> {
-          this.calcularHora(data.horaInicio.split(":")[0],data.horaInicio.split(":")[1]);
+        this.estacionamientoService.getTiempoTranscurrido().subscribe((data: number)=> {
+          let segundos = data / 1000; // tiempo transcurrido en segundos.
           this.estacionamientoOn= true;
+          //Math.trunc -> devuelve solo la parte entera del numero enviado.
+          console.log("nueva fecha:",new Date(data));
+          this.time.hora = Math.trunc(segundos / 3600); 
+          this.time.minutos = Math.trunc((segundos % 3600) / 60); 
+          this.precio = (this.time.hora * this.ciudad.valorHora) + this.ciudad.valorHora; 
         });
-      }else{
-        console.log("no hay estacionamiento iniciado");
       }
     });
    
@@ -152,23 +154,10 @@ export class PatentesComponent implements OnInit {
       this.saldo = data.saldo})
     }
 
-      //calculo de la hora evitando que los minutos se pongan en negativo.
-      // falta verificar que la hora no se ponga en negativo.
-    calcularHora(horaInicio:string, minInicio:string){
-      let today = new Date();
-      console.log("cuenta: ",  (today.getHours() - +horaInicio));
-        
-      if(today.getMinutes() - +minInicio < 0){
-        this.time.minutos = 60 + (today.getMinutes() - +minInicio);
-        this.time.hora = (today.getHours() - +horaInicio) - 1 ;
-        this.precio = this.ciudad.valorHora + (this.ciudad.valorHora*((today.getHours() - +horaInicio)-1));
-        
-      }else{
-        this.time.minutos = today.getMinutes() - +minInicio;
-        this.time.hora = today.getHours() - +horaInicio;
-        this.precio = this.ciudad.valorHora + (this.ciudad.valorHora*(today.getHours() - +horaInicio));
-      }
-
+  getCiudad(){
+    this.ciudadService.getAll().subscribe((data : any)=> {
+      this.ciudad = data[0];
+    });
   }
 
   // alertas y notificaciones de sweetAlert2
@@ -187,11 +176,5 @@ export class PatentesComponent implements OnInit {
     })
   }
   ///
-
-  getCiudad(){
-    this.ciudadService.getAll().subscribe((data : any)=> {
-      this.ciudad = data[0];
-    });
-  }
 
 }

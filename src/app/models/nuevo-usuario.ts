@@ -1,4 +1,5 @@
 export class NuevoUsuario {
+    id!: number;
     nombre!: string;
     nombreUsuario!: String;
     email!: string;

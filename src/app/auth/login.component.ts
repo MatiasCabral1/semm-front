@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import { LoginUsuario } from '../models/login-usuario';
 import { AuthService } from '../service/auth.service';
 import { TokenService } from '../service/token.service';
+import { UsuarioService } from '../service/usuario.service';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private tokenService: TokenService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private usuarioService: UsuarioService
   ) { }
 
   ngOnInit(): void {
@@ -39,11 +41,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.loginUsuario).subscribe(data => {
       this.isLogged = true;
       this.isLoginFail = false;
-      
-      this.tokenService.setToken(data.token);
-      console.log("token generado?",data.token);
-      this.tokenService.setUserName(data.nombreUsuario);
-      this.tokenService.setAuthorities(data.authorities);
+      this.setDatosUsuario(data);
       this.roles = data.authorities;
       this.router.navigate(['/sesion']);
     },
@@ -59,6 +57,17 @@ export class LoginComponent implements OnInit {
       })
     }
     );
+  }
+  setDatosUsuario(data: any){ 
+    this.tokenService.setToken(data.token);
+    this.tokenService.setUserName(data.nombreUsuario);
+    this.usuarioService.getDatos(data.nombreUsuario).subscribe(data =>{
+      this.tokenService.setNombre(data.nombre);
+
+      console.log("set datos", data.nombre);
+      console.log("get token: ", this.tokenService.getNombre());
+    });
+    
   }
 
 }

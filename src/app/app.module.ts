@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-import { indexComponent } from './pages/index/index.component';
 import { FormsModule } from '@angular/forms';
 import { SesionComponent } from './pages/sesion/sesion.component';
 
@@ -26,7 +25,6 @@ import { RegistrarPatenteComponent } from './pages/sesion/patentes/registrar-pat
 @NgModule({
   declarations: [
     AppComponent,
-    indexComponent,
     SesionComponent,
     EstacionamientoComponent,
     NavBarComponent,
