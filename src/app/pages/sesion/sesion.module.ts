@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { SesionRoutingModule } from './sesion-routing.module';
 import { RegistrarPatenteComponent } from './patentes/registrar-patente/registrar-patente.component';
+import { CuentaComponent } from './cuenta/cuenta.component';
 @NgModule({
   declarations: [
   ],

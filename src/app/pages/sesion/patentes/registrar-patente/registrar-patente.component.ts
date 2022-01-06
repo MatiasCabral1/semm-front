@@ -31,14 +31,14 @@ export class RegistrarPatenteComponent implements OnInit {
     if(this.validarExpresiones(this.numero)){
       console.log("cumple");
       this.usuarioPatente = new nuevaPatente(this.numero,this.tokenService.getUserName()!);
-      this.patenteService.create(this.numero,this.tokenService.getUserName()!).subscribe(data => {
+      this.patenteService.create(this.numero,this.tokenService.getUserName()!).subscribe((data: any) => {
         this.router.navigateByUrl("/listadoPatentes");
       },
       err =>{
         Swal.fire({
           width: 350,
           icon: 'error',
-          title: err.error.errors,
+          title: err.error.mensaje,
           showConfirmButton: false,
           timer: 2500,
         })

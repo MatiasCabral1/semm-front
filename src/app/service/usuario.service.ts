@@ -27,7 +27,7 @@ export class UsuarioService {
     return this.http.post<any>(this.url+'/debitar',this.username);
   }
 
-  public getSaldo(): Observable<any>{
+  public getCuentaCorriente(): Observable<any>{
     return this.http.post<any>(this.url+'/getSaldo',this.username)
   }
 

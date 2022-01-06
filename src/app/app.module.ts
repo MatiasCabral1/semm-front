@@ -9,7 +9,6 @@ import { SesionComponent } from './pages/sesion/sesion.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
-import { EstacionamientoComponent } from './pages/sesion/estacionamiento/estacionamiento.component';
 import { NavBarComponent } from './pages/sesion/nav-bar/nav-bar.component';
 import { CommonModule } from '@angular/common';
 import { LoginComponent } from './auth/login.component';
@@ -21,17 +20,18 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import {AuthInterceptorServiceProvider } from './interceptors/auth-interceptor.service';
 import { RegistrarPatenteComponent } from './pages/sesion/patentes/registrar-patente/registrar-patente.component';
+import { CuentaComponent } from './pages/sesion/cuenta/cuenta.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SesionComponent,
-    EstacionamientoComponent,
     NavBarComponent,
     LoginComponent,
     RegistroComponent,
     PatentesComponent,
-    RegistrarPatenteComponent
+    RegistrarPatenteComponent,
+    CuentaComponent
   ],
   imports: [
     AppRoutingModule,

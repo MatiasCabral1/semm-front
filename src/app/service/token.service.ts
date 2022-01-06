@@ -57,5 +57,12 @@ export class TokenService {
   public logOut(): void {
     window.sessionStorage.clear();
   }
+
+  public isLogged(): boolean {
+    if (this.getToken()) {
+      return true;
+    }
+    return false;
+  }
   
 }

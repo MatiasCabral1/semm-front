@@ -150,7 +150,7 @@ export class PatentesComponent implements OnInit {
   }
   //obtenemos la cuenta corriente del usuario y seteamos nuestra variable "this.saldo" con "cuentaCorriente.saldo"
   getSaldo():void{
-   this.usuarioService.getSaldo().subscribe((data: any) => {
+   this.usuarioService.getCuentaCorriente().subscribe((data: any) => {
       this.saldo = data.saldo})
     }
 
