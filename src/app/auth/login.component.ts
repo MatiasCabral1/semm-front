@@ -63,9 +63,6 @@ export class LoginComponent implements OnInit {
     this.tokenService.setUserName(data.nombreUsuario);
     this.usuarioService.getDatos(data.nombreUsuario).subscribe(data =>{
       this.tokenService.setNombre(data.nombre);
-
-      console.log("set datos", data.nombre);
-      console.log("get token: ", this.tokenService.getNombre());
     });
     
   }

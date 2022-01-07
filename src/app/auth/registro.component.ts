@@ -39,7 +39,6 @@ export class RegistroComponent implements OnInit {
         this.router.navigate(['/login']);
       },
       err => {
-        console.log("error", err);
         Swal.fire({
           width: 350,
           icon: 'error',

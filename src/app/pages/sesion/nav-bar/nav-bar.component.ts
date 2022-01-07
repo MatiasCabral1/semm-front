@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Persona } from 'src/app/models/persona';
 import { TokenService } from 'src/app/service/token.service';
 
 @Component({

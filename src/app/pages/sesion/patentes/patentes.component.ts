@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Ciudad } from 'src/app/models/Ciudad';
 import { Estacionamiento } from 'src/app/models/Estacionamiento';
 import { modelPatente } from 'src/app/models/modelPatente';
+import { TiempoPrecioDTO } from 'src/app/models/TiempoPrecioDTO';
 import { CiudadService } from 'src/app/service/ciudad.service';
 import { estacionamientoService } from 'src/app/service/estacionamiento.service';
 import { PatenteService } from 'src/app/service/patente.service';
@@ -17,6 +18,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./patentes.component.scss']
 })
 export class PatentesComponent implements OnInit {
+  mostrar = true;
   ciudad!:Ciudad;
   saldo!: any;
   precio!: number;
@@ -36,14 +38,13 @@ export class PatentesComponent implements OnInit {
     private usuarioService: UsuarioService,
     private estacionamientoService: estacionamientoService,
     private tokenService: TokenService,
-    private ciudadService: CiudadService
+    private patenteService: PatenteService
     ) { }
 
   ngOnInit(): void {
     this.getPatentes();
     this.getSaldo();
     this.getTiempoYprecio();
-    this.getCiudad();
   }
 
   @ViewChild(MatTable) tabla1!: MatTable<modelPatente>;
@@ -65,8 +66,13 @@ export class PatentesComponent implements OnInit {
 
   //obtenemos las patentes del usuario que inicio sesion.
   getPatentes():void{
+
     this.usuarioService.getPatentes().subscribe((data: any) =>{
+      console.log(data);
       this.datos = data;
+      if(data.length == 0){
+        this.mostrar = false;
+      }
   })
   }
 
@@ -128,6 +134,14 @@ export class PatentesComponent implements OnInit {
       }
     }) 
   }
+
+  eliminarPatente(row: number){
+    let patente = this.datos[row].numero;
+    this.patenteService.delete(patente,this.tokenService.getUserName()!).subscribe(data=>{
+      this.alertaDelete(data.mensaje);
+    });
+    
+  }
   //verificamos que haya una patente iniciada, si no hay ninguna iniciada se informa en la consola
   //sino se setea el intervalo de invocacion de esta funcion cada 1 minuto.
   getTiempoYprecio(){
@@ -135,14 +149,12 @@ export class PatentesComponent implements OnInit {
       if(data){
         clearInterval(this.interval);
         this.interval = setInterval(()=> this.getTiempoYprecio(),60000)
-        this.estacionamientoService.getTiempoTranscurrido().subscribe((data: number)=> {
-          let segundos = data / 1000; // tiempo transcurrido en segundos.
+        this.estacionamientoService.getTiempoTranscurrido().subscribe((data: TiempoPrecioDTO)=> {
+          console.log("contenido de getHora: ", data);
+          this.time.hora = data.horas;
+          this.time.minutos = data.minutos
+          this.precio = data.precio;
           this.estacionamientoOn= true;
-          //Math.trunc -> devuelve solo la parte entera del numero enviado.
-          console.log("nueva fecha:",new Date(data));
-          this.time.hora = Math.trunc(segundos / 3600); 
-          this.time.minutos = Math.trunc((segundos % 3600) / 60); 
-          this.precio = (this.time.hora * this.ciudad.valorHora) + this.ciudad.valorHora; 
         });
       }
     });
@@ -151,14 +163,10 @@ export class PatentesComponent implements OnInit {
   //obtenemos la cuenta corriente del usuario y seteamos nuestra variable "this.saldo" con "cuentaCorriente.saldo"
   getSaldo():void{
    this.usuarioService.getCuentaCorriente().subscribe((data: any) => {
+     console.log(data);
       this.saldo = data.saldo})
     }
 
-  getCiudad(){
-    this.ciudadService.getAll().subscribe((data : any)=> {
-      this.ciudad = data[0];
-    });
-  }
 
   // alertas y notificaciones de sweetAlert2
   successNotification(){
@@ -175,6 +183,16 @@ export class PatentesComponent implements OnInit {
       icon: 'warning',
     })
   }
+  alertaDelete(mensaje: string){
+    Swal.fire({
+      title: mensaje,
+      icon: 'success',
+    }).then((result)=> {
+      if (result.value){
+        window.location.reload();
+      }
+  })
+}
   ///
 
 }

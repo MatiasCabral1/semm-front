@@ -1,7 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { CuentaCorriente } from '../models/CuentaCorriente';
 import { modelPatente } from '../models/modelPatente';
+import { NuevoUsuario } from '../models/nuevo-usuario';
 import { TokenService } from './token.service';
 
 @Injectable({
@@ -23,8 +25,12 @@ export class UsuarioService {
   }
 
   public debitar():Observable<any>{
-    console.log("ejecutando debito");
     return this.http.post<any>(this.url+'/debitar',this.username);
+  }
+
+  public cargarSaldo(cuentaCorriente: CuentaCorriente):Observable<any>{
+    console.log("monto enviado",cuentaCorriente.saldo);
+    return this.http.post<any>(this.url+'/cargarSaldo',cuentaCorriente);
   }
 
   public getCuentaCorriente(): Observable<any>{

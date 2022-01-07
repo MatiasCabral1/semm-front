@@ -5,10 +5,14 @@ export class NuevoUsuario {
     email!: string;
     password!: string;
     authorities!: string[];
+    cuentaCorriente!:{
+        id:number,
+        saldo:number,
+    };
     constructor(nombre: string, nombreUsuario: string, email: string, password: string) {
         this.nombre = nombre;
         this.nombreUsuario = nombreUsuario;
         this.email = email;
         this.password = password;
-    }
+    }   
 }

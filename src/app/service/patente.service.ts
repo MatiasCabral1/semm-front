@@ -24,6 +24,11 @@ export class PatenteService {
     return this.http.post<any>(this.url+'/guardar',this.nuevaPatente);
   }
 
+  delete(patente: string, usuario: string):Observable<any>{
+    this.nuevaPatente = new nuevaPatente(patente,usuario);
+    return this.http.post<any>(this.url+'/delete',this.nuevaPatente);
+  }
+
   get(id: number):Observable<modelPatente>{
     return this.http.get<modelPatente>(this.url+'/'+id); 
   }

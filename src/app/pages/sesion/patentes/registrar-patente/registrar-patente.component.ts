@@ -29,7 +29,6 @@ export class RegistrarPatenteComponent implements OnInit {
 
   registrarPatente(){
     if(this.validarExpresiones(this.numero)){
-      console.log("cumple");
       this.usuarioPatente = new nuevaPatente(this.numero,this.tokenService.getUserName()!);
       this.patenteService.create(this.numero,this.tokenService.getUserName()!).subscribe((data: any) => {
         this.router.navigateByUrl("/listadoPatentes");

@@ -10,7 +10,7 @@
                       <h4 class="mb-0">Nombre </h4>
                     </div>
                     <div class="col-sm-9 text-primary">
-                      {{misDatos.nombre}}
+                      {{misDatos?.nombre}}
                     </div>
                   </div>
                   <hr>
@@ -20,7 +20,7 @@
                       <h4 class="mb-0">Telefono</h4>
                     </div>
                     <div class="col-sm-9 text-primary">
-                        {{misDatos.email}}
+                      {{misDatos?.nombreUsuario}}
                     </div>
                   </div>
                   <hr>
@@ -30,7 +30,7 @@
                       <h4 class="mb-0">Email</h4>
                     </div>
                     <div class="col-sm-9 text-primary">
-                      {{misDatos.nombreUsuario}}
+                      {{misDatos?.email}}
                     </div>
                   </div>
                   <hr>
@@ -49,14 +49,41 @@
                       <hr>
                       <h4 class="mb-0">Balance actual</h4>
                       <hr>
-                      <h1> ${{cuentaCorriente.saldo}} </h1> 
+                      <div *ngIf="1 > 0; else cuentaVacia">
+                      <h1> ${{misDatos?.cuentaCorriente?.saldo}}</h1> 
+                    </div>
+                    <ng-template #cuentaVacia>
+                      <h1> $0 </h1> 
+                      <h4> Aun no ha realizado ninguna carga </h4> 
+                    </ng-template>
                       <hr>
-                      <button class="btn btn-primary">Cargar</button>
+                      <button class="btn btn-primary" (click)= "mostrar = true">Cargar</button>
                     </div>
                   </div>
                 </div>
               </div>
           </div>
-
+          <div class="card" *ngIf="mostrar">
+            <div class="card-body">
+              <div class="text-center">
+                <h3>Ingrese monto a cargar</h3>
+              </div>
+               <div class="d-flex flex-column align-items-center text-center" >
+                <div class="input-group mb-2">
+                  
+                  <div class="input">
+                    <span class="input-group-text">$</span>
+                  </div>
+                  <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" 
+                   [(ngModel)]="cantidad">
+                </div>
+                <div class="flex-column">
+                   <button class="btn btn-success" (click)= "cargarSaldo()">Aceptar</button>
+                   <button class="btn btn-danger" (click)= "mostrar = false">Cancelar</button>
+                  </div>
+              </div>
+            </div>
+          </div>
         </div>
+        
     </div>
