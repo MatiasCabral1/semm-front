@@ -1,0 +1,29 @@
+<app-nav-bar></app-nav-bar>
+
+<table class="table">
+<thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Fecha y hora de inicio</th>
+      <th scope="col">Tipo de operacion</th>
+      <th scope="col">Saldo previo</th>
+    </tr>
+  </thead>
+<tbody >
+    <tr *ngFor="let h of historial | slice: (page-1) * pageSize : page * pageSize; index as i"
+    >   
+            <td> <h3>{{i+1}}</h3></td>
+            <td >{{h?.horaInicio}}</td>
+            <td>{{h?.tipoOperacion}}</td>
+            <td>${{h?.saldoAnterior}}</td>
+    </tr>
+
+   
+  </tbody>
+
+</table>
+<ngb-pagination 
+[(page)]="page"
+[pageSize]="pageSize"
+[collectionSize]="historial.length" >
+</ngb-pagination>

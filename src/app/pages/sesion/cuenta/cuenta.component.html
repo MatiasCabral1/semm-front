@@ -57,8 +57,12 @@
                       <h4> Aun no ha realizado ninguna carga </h4> 
                     </ng-template>
                       <hr>
-                      <button class="btn btn-primary" (click)= "mostrar = true">Cargar</button>
-                    </div>
+                      <div class= "d-flex flex-column ">
+                        <button class="btn btn-primary" (click)= "mostrar = true">Cargar</button>
+                        <button class="btn btn-primary mt-3" [routerLink]="['/historial']" routerLinkActive="router-link-active" >Historial</button>
+                      
+                      </div>
+                      </div>
                   </div>
                 </div>
               </div>

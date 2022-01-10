@@ -2,11 +2,14 @@ import { Component, OnInit,ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { ToastrService } from 'ngx-toastr';
 import { Ciudad } from 'src/app/models/Ciudad';
+import { CuentaCorriente } from 'src/app/models/CuentaCorriente';
 import { Estacionamiento } from 'src/app/models/Estacionamiento';
+import { Historial } from 'src/app/models/Historial';
 import { modelPatente } from 'src/app/models/modelPatente';
 import { TiempoPrecioDTO } from 'src/app/models/TiempoPrecioDTO';
 import { CiudadService } from 'src/app/service/ciudad.service';
 import { estacionamientoService } from 'src/app/service/estacionamiento.service';
+import { HistorialServiceService } from 'src/app/service/historial-service.service';
 import { PatenteService } from 'src/app/service/patente.service';
 import { TokenService } from 'src/app/service/token.service';
 import { UsuarioService } from 'src/app/service/usuario.service';
@@ -38,7 +41,8 @@ export class PatentesComponent implements OnInit {
     private usuarioService: UsuarioService,
     private estacionamientoService: estacionamientoService,
     private tokenService: TokenService,
-    private patenteService: PatenteService
+    private patenteService: PatenteService,
+    private historialService: HistorialServiceService
     ) { }
 
   ngOnInit(): void {
@@ -128,11 +132,23 @@ export class PatentesComponent implements OnInit {
         let today = new Date();
         this.estacionamientoService.finalizarEstacionamiento().subscribe();
         this.usuarioService.debitar().subscribe();
+        this.cargarHistorial();
         this.estacionamientoOn= false;
         clearInterval(this.interval);
         window.location.reload();
       }
     }) 
+  }
+
+  private cargarHistorial(){
+    let today = new Date();
+    let username = this.tokenService.getUserName()!;
+    this.usuarioService.getCuentaCorriente(username).subscribe((data: CuentaCorriente)=>{
+      this.historialService.create(new Historial(today.toString(),"Consumo",this.saldo,data)).subscribe(data=>{
+        console.log("historial generado", data);
+      });
+    });
+    
   }
 
   eliminarPatente(row: number){
@@ -162,7 +178,8 @@ export class PatentesComponent implements OnInit {
   }
   //obtenemos la cuenta corriente del usuario y seteamos nuestra variable "this.saldo" con "cuentaCorriente.saldo"
   getSaldo():void{
-   this.usuarioService.getCuentaCorriente().subscribe((data: any) => {
+    let username = this.tokenService.getUserName()!;
+   this.usuarioService.getCuentaCorriente(username).subscribe((data: any) => {
      console.log(data);
       this.saldo = data.saldo})
     }

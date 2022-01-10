@@ -21,6 +21,8 @@ import { MatButtonModule } from '@angular/material/button';
 import {AuthInterceptorServiceProvider } from './interceptors/auth-interceptor.service';
 import { RegistrarPatenteComponent } from './pages/sesion/patentes/registrar-patente/registrar-patente.component';
 import { CuentaComponent } from './pages/sesion/cuenta/cuenta.component';
+import { HistorialComponent } from './pages/sesion/historial/historial.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { CuentaComponent } from './pages/sesion/cuenta/cuenta.component';
     RegistroComponent,
     PatentesComponent,
     RegistrarPatenteComponent,
-    CuentaComponent
+    CuentaComponent,
+    HistorialComponent
   ],
   imports: [
     AppRoutingModule,
@@ -43,7 +46,8 @@ import { CuentaComponent } from './pages/sesion/cuenta/cuenta.component';
     CommonModule,
     MatTableModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    NgbModule,
  
   ],
   providers: [AuthInterceptorServiceProvider],

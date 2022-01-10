@@ -33,8 +33,8 @@ export class UsuarioService {
     return this.http.post<any>(this.url+'/cargarSaldo',cuentaCorriente);
   }
 
-  public getCuentaCorriente(): Observable<any>{
-    return this.http.post<any>(this.url+'/getSaldo',this.username)
+  public getCuentaCorriente(username: string): Observable<any>{
+    return this.http.post<any>(this.url+'/getSaldo',username)
   }
 
   public getDatos(username:string): Observable<any>{
