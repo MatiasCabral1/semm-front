@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { modelPatente } from 'src/app/models/modelPatente';
 import { nuevaPatente } from 'src/app/models/nueva-patente';
 import { PatenteService } from 'src/app/service/patente.service';
@@ -21,7 +22,8 @@ export class RegistrarPatenteComponent implements OnInit {
   constructor(
     private patenteService: PatenteService,
     private tokenService: TokenService,
-    private router: Router
+    private router: Router,
+    public activeModal: NgbActiveModal
   ) { }
 
   ngOnInit(): void {
@@ -31,16 +33,10 @@ export class RegistrarPatenteComponent implements OnInit {
     if(this.validarExpresiones(this.numero)){
       this.usuarioPatente = new nuevaPatente(this.numero,this.tokenService.getUserName()!);
       this.patenteService.create(this.numero,this.tokenService.getUserName()!).subscribe((data: any) => {
-        this.router.navigateByUrl("/listadoPatentes");
+        this.notificacionGuardado();
       },
       err =>{
-        Swal.fire({
-          width: 350,
-          icon: 'error',
-          title: err.error.mensaje,
-          showConfirmButton: false,
-          timer: 2500,
-        })
+        this.errorEnGuardado(err.error.mensaje);
       }); 
     }
   }
@@ -68,6 +64,30 @@ export class RegistrarPatenteComponent implements OnInit {
   errorNotificationExpresion(){
     Swal.fire('El formato ingresado es invalido', 'Ejemplos de formatos aceptados: "AAA999" - "AA000AA"', 'error')
   }
+
+  errorEnGuardado(mensaje: string){
+    console.log(mensaje);
+    Swal.fire({
+      width: 350,
+      icon: 'error',
+      title: mensaje,
+      showConfirmButton: false,
+      timer: 2500,
+    })
+  }
+
+  notificacionGuardado(){
+    Swal.fire({
+      width: 350,
+      icon: 'success',
+      title: "patente registrada correctamente",
+      showConfirmButton: true,
+    }).then((result)=> {
+      if (result.value){
+        window.location.reload();
+      }
+  })
+}
   //expresiones regulares AAA999 -> /\D\D\D\d\d\d/gm
   //formato mercosur -> /\D\D\d\d\d\D\D/gm
 

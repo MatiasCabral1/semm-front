@@ -1,5 +1,6 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, Input, OnInit,ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Ciudad } from 'src/app/models/Ciudad';
 import { CuentaCorriente } from 'src/app/models/CuentaCorriente';
@@ -14,6 +15,7 @@ import { PatenteService } from 'src/app/service/patente.service';
 import { TokenService } from 'src/app/service/token.service';
 import { UsuarioService } from 'src/app/service/usuario.service';
 import Swal from 'sweetalert2';
+import { RegistrarPatenteComponent } from './registrar-patente/registrar-patente.component';
 
 @Component({
   selector: 'app-patentes',
@@ -21,6 +23,8 @@ import Swal from 'sweetalert2';
   styleUrls: ['./patentes.component.scss']
 })
 export class PatentesComponent implements OnInit {
+  @Input() name:any;
+
   mostrar = true;
   ciudad!:Ciudad;
   saldo!: any;
@@ -32,8 +36,9 @@ export class PatentesComponent implements OnInit {
     minutos : 0
   }
   interval:any;
-
-  datos!: modelPatente[];
+  page = 1;
+  pageSize = 5;
+  datos: modelPatente[] = [];
   columnas: string[] = [ 'numero','ver', 'editar', 'borrar'];
   eventoselect: modelPatente = new modelPatente("datoModelado" );
 
@@ -42,7 +47,8 @@ export class PatentesComponent implements OnInit {
     private estacionamientoService: estacionamientoService,
     private tokenService: TokenService,
     private patenteService: PatenteService,
-    private historialService: HistorialServiceService
+    private historialService: HistorialServiceService,
+    private modalService: NgbModal
     ) { }
 
   ngOnInit(): void {
@@ -99,7 +105,7 @@ export class PatentesComponent implements OnInit {
           this.errorNotification();
         }else{
           let today = new Date();
-          this.estacionamiento = new Estacionamiento(today.toString(), true, this.datos[row].numero);
+          this.estacionamiento = new Estacionamiento(today.toString(), true, this.datos[row-1].numero);
           this.estacionamiento.username = this.tokenService.getUserName()!;
           //enviamos el estacionamiento-> si devuelve NULL entonces el estacionamiento no se pudo guardar
           // no se pudo guardar porque la patente ya se encuentra en un estacionamiento iniciado.
@@ -131,28 +137,25 @@ export class PatentesComponent implements OnInit {
       if (result.value){
         let today = new Date();
         this.estacionamientoService.finalizarEstacionamiento().subscribe();
-        this.usuarioService.debitar().subscribe();
-        this.cargarHistorial();
+        this.usuarioService.debitar().subscribe((data : CuentaCorriente)=>{ 
+          this.cargarHistorial(data);
+          });
         this.estacionamientoOn= false;
         clearInterval(this.interval);
-        window.location.reload();
+        //window.location.reload();
       }
     }) 
   }
 
-  private cargarHistorial(){
+  private cargarHistorial(cc: CuentaCorriente){
     let today = new Date();
-    let username = this.tokenService.getUserName()!;
-    this.usuarioService.getCuentaCorriente(username).subscribe((data: CuentaCorriente)=>{
-      this.historialService.create(new Historial(today.toString(),"Consumo",this.saldo,data)).subscribe(data=>{
-        console.log("historial generado", data);
-      });
+    this.historialService.create(new Historial(today.toString(),"Consumo",cc.saldo,this.saldo - cc.saldo,cc)).subscribe(data=>{
     });
     
   }
 
   eliminarPatente(row: number){
-    let patente = this.datos[row].numero;
+    let patente = this.datos[row-1].numero;
     this.patenteService.delete(patente,this.tokenService.getUserName()!).subscribe(data=>{
       this.alertaDelete(data.mensaje);
     });
@@ -210,6 +213,10 @@ export class PatentesComponent implements OnInit {
       }
   })
 }
-  ///
+  ///modal
+  open() {
+    const modalRef = this.modalService.open(RegistrarPatenteComponent);
+    modalRef.componentInstance.name = 'World';
+  }
 
 }

@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 export class CuentaComponent implements OnInit {
   misDatos!: DatosCuentaDTO;
   mostrar = false;
-  cantidad!: number;
+  cantidad!: number; // monto a cargar
 
 
   constructor(
@@ -88,7 +88,7 @@ export class CuentaComponent implements OnInit {
 
   private cargarHistorial(cc: CuentaCorriente){
     let today = new Date();
-    this.historialService.create(new Historial(today.toString(),"Carga",this.misDatos.cuentaCorriente.saldo,cc)).subscribe(data=>{
+    this.historialService.create(new Historial(today.toString(),"Carga",(this.misDatos.cuentaCorriente.saldo+ +this.cantidad),this.cantidad,cc)).subscribe(data=>{
       console.log("historial generado", data);
     });
   }

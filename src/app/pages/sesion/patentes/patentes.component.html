@@ -1,97 +1,77 @@
 <app-nav-bar></app-nav-bar>
-<body >
-<div class="container" *ngIf="mostrar ;else listadoVacio">
-    <h1>Listado de sus patentes registradas</h1>
-
-    <!-- VENTANA DONDE SE MUESTRA EL BOTON FINALIZAR ESTACIONAMIENTO Y CONTADOR DE TIEMPO TRANSCURRIDO -->
-    <ng-container class="estacionamiento" matColumnDef="Estacionamiento" *ngIf="estacionamientoOn">
-        <mat-card class="cardPatenteIniciada">
-            <mat-card-title>Estacionamiento iniciado </mat-card-title>
-            <mat-card-content>Recordatorio: Para iniciar un estacionamiento con otra patente primero debe finalizar el actual.</mat-card-content>
-            <mat-card-actions>
-                <div >
-               Tiempo transcurrido: <br> {{time.hora + " "}}hs: {{time.minutos+ " "}}min<br>
-               </div>
-               <div style="padding: 5%;">
-                Total a pagar: <br> ${{precio}}<br>
-                </div>
-              <button  mat-flat-button color="primary" (click)= "finalizarEstacionamiento()" [disabled]="!estacionamientoOn"> 
-                Finalizar estacionamiento 
-              </button>
-            </mat-card-actions>
-          </mat-card>
-    </ng-container>  
-<div class="contedor-listado">
-    <!--BOTON REGISTRAR PATENTE -->
-    <ng-container matColumnDef="registrar">
-        <button mat-raised-button color="warn" style="background-color: darkolivegreen;" [routerLink]="['/registrarPatente']" routerLinkActive="router-link-active"  focusable="false">
-            Registrar patente
-        </button>
-    </ng-container>
-
-    <!-- INICIO DE LISTADO DE PATENTES.-->
-    <table class="table" mat-table [dataSource]="datos" class="mat-elevation-z8" #tabla1 >
-        <ng-container matColumnDef="borrar">
-            <th mat-header-cell *matHeaderCellDef> 
-                    <div class="card d-flex align-items-center">
-                            <h3 style="margin: 0 0 0px;">Mi saldo ${{saldo}}</h3>
-                            <button class="btn btn-primary" [routerLink]="['/miCuenta']" routerLinkActive="router-link-active">Cargar</button>
-                    </div>
-            </th>
-            <td mat-cell *matCellDef="let j = index;">
-            <button mat-raised-button color="warn" focusable="false" (click)="eliminarPatente(j)">
-                Eliminar
-            </button>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="numero">
-        <th mat-header-cell *matHeaderCellDef class="label-titulo"> Número </th>
-        <td mat-cell *matCellDef="let modelPatente" class="label-texto"> {{modelPatente.numero}} </td>
-        </ng-container>
-        
-        <ng-container matColumnDef="ver">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let j = index;">
-            <button mat-raised-button color="warn" style="background-color: darkolivegreen;" focusable="false" (click)= "iniciarEstacionamiento(j)" [disabled]="estacionamientoOn">
-                Iniciar estacionamiento
-            </button>
-            </td>
-        </ng-container>  
-
-        <ng-container matColumnDef="editar">
-            <th mat-header-cell *matHeaderCellDef> </th>
-            <td mat-cell *matCellDef="let j = index;">
-            <button mat-raised-button color="warn" style="background-color: darkorange;" focusable="false">
-                Editar
-            </button>
-            </td>
-        </ng-container>
 
 
-       
+
+<div class="container d-flex justify-content-between" *ngIf="mostrar ;else listadoVacio">
     
-    
-        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
-        <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+        <table class="table">
+            <h1>Listado de sus patentes registradas</h1>
+        <div class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th scope="col">
+                        <button class="btn btn-lg btn-outline-success" (click)="open()">Registrar patente</button>
+                    </th>
+                    <th scope="col"> <button class="btn btn-lg btn-outline-success" [routerLink]="['/miCuenta']" routerLinkActive="router-link-active">Mi cuenta</button></th>
+                    <th scope="col">Mi saldo ${{saldo}}</th>
+                </tr>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Numero de patente</th>
         
+                </tr>
+            </thead>
+            <tbody >
+                <tr *ngFor="let h of datos | slice: (page-1) * pageSize : page * pageSize; index as i">   
+                        <td> <h3>{{i+1}}</h3></td>
+                        <td>{{h?.numero}}</td>
+                        <td>
+                            <button class="btn btn-success" (click)= "iniciarEstacionamiento(i+1)" [disabled]="estacionamientoOn">Iniciar estacionamiento</button>
+                        </td>
+                        <td >
+                            <button class="btn btn-danger" (click)="eliminarPatente(i+1)"> Eliminar</button>
+                        </td>
+                </tr>
+            </tbody>
+            
+            <ngb-pagination 
+            [(page)]="page"
+            [pageSize]="pageSize"
+            [collectionSize]="datos.length" >
+            </ngb-pagination>
+        
+        </div>
     </table>
+    <!-- VENTANA DONDE SE MUESTRA EL BOTON FINALIZAR ESTACIONAMIENTO Y CONTADOR DE TIEMPO TRANSCURRIDO -->
+    <div class="card text-center" style="width: 20rem;" *ngIf="estacionamientoOn">
+        <div class="card-body">
+          <h2 class="card-title">Estacionamiento iniciado</h2>
+          <h3 class="card-subtitle mb-2 text-muted">Recordatorio: Para iniciar un estacionamiento con otra patente primero debe finalizar el actual.</h3>
+          
+          <div class="content">
+            <div>
+                <h2>Tiempo transcurrido: <br> {{time.hora + " "}}hs: {{time.minutos+ " "}}min</h2>
+                </div>
+                <div >
+                 <h2> Total a pagar: <br> ${{precio}}<br></h2>
+                 </div>
+          </div>
+             <button class="btn btn-danger" (click)= "finalizarEstacionamiento()" [disabled]="!estacionamientoOn">Finalizar estacionamiento </button>
+        </div>
+      </div>
     
 </div>
-</div>  
+
 <ng-template #listadoVacio>
-    <mat-card class="card-listadoVacio">
-        <mat-card-title>No hay patentes registradas. </mat-card-title>
-        <mat-card-content>Registre una patente para administrar su estacionamiento.</mat-card-content>
-        <mat-card-actions>
-            <ng-container matColumnDef="registrar">
-                <button mat-raised-button color="warn" style="background-color: darkolivegreen;" [routerLink]="['/registrarPatente']" routerLinkActive="router-link-active"  focusable="false">
-                    Registrar patente
-                </button>
-            </ng-container>
-        </mat-card-actions>
-      </mat-card>
+    <div class="containerVacio">
+      <h1> No hay patentes registradas.</h1>
+      <p>Registre una patente para administrar su estacionamiento.</p>
+      <ng-container matColumnDef="registrar">
+        <button class="btn btn-lg btn-outline-success" (click)="open()">Registrar patente</button>
+    </ng-container>
+    </div>
   </ng-template>
-</body>
+
 
     

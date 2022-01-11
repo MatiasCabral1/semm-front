@@ -1,29 +1,43 @@
 <app-nav-bar></app-nav-bar>
-
-<table class="table">
+<div class="container">
+<table class="table" *ngIf="historial.length != 0;else historialVacio">
 <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">Fecha y hora de inicio</th>
+      
       <th scope="col">Tipo de operacion</th>
-      <th scope="col">Saldo previo</th>
+      <th scope="col">Monto</th>
+      <th scope="col">Saldo </th>
+      <th scope="col">Fecha y hora de inicio</th>
     </tr>
   </thead>
 <tbody >
     <tr *ngFor="let h of historial | slice: (page-1) * pageSize : page * pageSize; index as i"
     >   
             <td> <h3>{{i+1}}</h3></td>
-            <td >{{h?.horaInicio}}</td>
             <td>{{h?.tipoOperacion}}</td>
+            <td *ngIf="h?.tipoOperacion == 'Consumo'; else tdcarga ">-${{h?.monto}}</td>
+            <ng-template #tdcarga>
+              <td #tdcarga>+ ${{h?.monto}}</td>
+            </ng-template>
             <td>${{h?.saldoAnterior}}</td>
+            <td >{{h?.horaInicio}}</td>
     </tr>
 
    
   </tbody>
+  
+  <ngb-pagination 
+  [(page)]="page"
+  [pageSize]="pageSize"
+  [collectionSize]="historial.length" >
+  </ngb-pagination>
 
 </table>
-<ngb-pagination 
-[(page)]="page"
-[pageSize]="pageSize"
-[collectionSize]="historial.length" >
-</ngb-pagination>
+<ng-template #historialVacio>
+  <div class="containerVacio">
+    <h1> Historial vacio</h1>
+    <p>Actualmente no posee movimientos en su cuenta.</p>
+  </div>
+</ng-template>
+</div>

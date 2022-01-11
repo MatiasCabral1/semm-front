@@ -32,6 +32,11 @@ export class HistorialComponent implements OnInit {
       this.historialService.getByCc(data.id).subscribe((data)=>{
         console.log("historial obtenido: ", data);
         this.historial = data;
+        this.historial.forEach(function(h){
+          let fecha = new Date(h.horaInicio);
+          h.horaInicio = fecha.toLocaleDateString() + '  '+ fecha.toLocaleTimeString();
+          console.log("fecha resultante: ",  h.horaInicio);
+        })
         //this.historial = new Historial(data.horaInicio,data.tipoOperacion, data.saldoAnterior,data.cuentaCorriente);
       });
     });
