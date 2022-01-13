@@ -5,10 +5,12 @@ import { ToastrService } from 'ngx-toastr';
 import { Ciudad } from 'src/app/models/Ciudad';
 import { CuentaCorriente } from 'src/app/models/CuentaCorriente';
 import { Estacionamiento } from 'src/app/models/Estacionamiento';
+import { Feriado } from 'src/app/models/Feriado';
 import { Historial } from 'src/app/models/Historial';
 import { modelPatente } from 'src/app/models/modelPatente';
 import { TiempoPrecioDTO } from 'src/app/models/TiempoPrecioDTO';
 import { CiudadService } from 'src/app/service/ciudad.service';
+import { DiasNoHabilesService } from 'src/app/service/dias-no-habiles.service';
 import { estacionamientoService } from 'src/app/service/estacionamiento.service';
 import { HistorialServiceService } from 'src/app/service/historial-service.service';
 import { PatenteService } from 'src/app/service/patente.service';
@@ -24,7 +26,7 @@ import { RegistrarPatenteComponent } from './registrar-patente/registrar-patente
 })
 export class PatentesComponent implements OnInit {
   @Input() name:any;
-
+  fechaHabil = false;
   mostrar = true;
   ciudad!:Ciudad;
   saldo!: any;
@@ -48,13 +50,15 @@ export class PatentesComponent implements OnInit {
     private tokenService: TokenService,
     private patenteService: PatenteService,
     private historialService: HistorialServiceService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private diasNoHabiles: DiasNoHabilesService
     ) { }
 
   ngOnInit(): void {
     this.getPatentes();
     this.getSaldo();
     this.getTiempoYprecio();
+    console.log("contenido de fecha habil: ", this.fechaHabil)
   }
 
   @ViewChild(MatTable) tabla1!: MatTable<modelPatente>;
@@ -89,7 +93,7 @@ export class PatentesComponent implements OnInit {
   //verifica que se presione el boton "aceptar"
   //si se presiona aceptar -> se verifica que el saldo de la cuenta del usuario alcance para el minimo de una hora.
   //se crea un estacionamiento en la ddbb, 
-  iniciarEstacionamiento(row: number):void{
+  iniciarEstacionamiento(row: number, today :Date):void{
     Swal.fire({
       title: 'Iniciando estacionamiento',
       text: 'Esta seguro que desea Iniciar estacionamiento?',
@@ -101,25 +105,63 @@ export class PatentesComponent implements OnInit {
       //si el saldo es menor a 10 -> no se puede iniciar estacionamiento por falta de saldo.
     }).then((result)=> {
       if (result.value){
-        if(this.saldo < 10){
-          this.errorNotification();
-        }else{
-          let today = new Date();
-          this.estacionamiento = new Estacionamiento(today.toString(), true, this.datos[row-1].numero);
-          this.estacionamiento.username = this.tokenService.getUserName()!;
-          //enviamos el estacionamiento-> si devuelve NULL entonces el estacionamiento no se pudo guardar
-          // no se pudo guardar porque la patente ya se encuentra en un estacionamiento iniciado.
-          this.estacionamientoService.save(this.estacionamiento).subscribe(data => {
-          if(data != null){
-            this.estacionamientoOn= true;
-            window.location.reload();
-           }else{
-                this.tinyAlert();
-            }});
-        }
-
-      }
+            if(this.saldo < 10){
+              this.errorNotification();
+            }else{
+                //si devuelve true entonces estamos en dias habiles y se inicia el estacionamiento.
+                this.estacionamiento = new Estacionamiento(today.toString(), true, this.datos[row-1].numero);
+                this.estacionamiento.username = this.tokenService.getUserName()!;
+                //enviamos el estacionamiento-> si devuelve NULL entonces el estacionamiento no se pudo guardar
+                // no se pudo guardar porque la patente ya se encuentra en un estacionamiento iniciado.
+                this.estacionamientoService.save(this.estacionamiento).subscribe(data => {
+                if(data != null){
+                  this.estacionamientoOn= true;
+                  window.location.reload();
+                }else{
+                      this.tinyAlert();
+                  }});
+              }
+    }
     })
+  }
+
+  verificarEstacionamiento(row: number){
+    //row es el index para encontrar estacionamiento en la lista.
+    let today = new Date();
+    let dia = today.toString().split(' ')[0];
+    if((dia.match("Sun")) || (dia.match("Sat"))){
+      this.errorDiasNoHabiles();
+    }else{
+      this.verificarDiasHabiles(row,today);
+    }
+  }
+    
+    
+    
+  
+  verificarDiasHabiles(row: number, today: Date){
+    //el boton iniciar estacionamiento del html invoca a este metodo
+    //obtiene la fecha formateada igual que en la tabla feriado-> ej: "12/1".
+    //se reemplaza '/' con '-' porque sino genera problemas con la url y no lo toma como string.
+    //llama al metodo getByFecha que devuelve true si el dia actual NO es un dia habil.
+    let fechaFormateada = today.toLocaleDateString().split('/')[0] +"-"+ today.toLocaleDateString().split ('/')[1];
+    console.log("resultado de fecha formateada: ", fechaFormateada);
+    this.diasNoHabiles.getByFecha(fechaFormateada).subscribe((data: boolean)=>{
+      if(data){
+        //no es dia habil
+        this.errorDiasNoHabiles();
+      }else{
+        console.log("que tiene estacionamientoOn?: ",this.estacionamientoOn);
+        if(this.estacionamientoOn){
+          console.log("se ejecutara finalizar");
+          this.finalizarEstacionamiento();
+        }else{
+          console.log("se ejecutara iniciar");
+          this.iniciarEstacionamiento(row,today);
+        }
+        
+      }
+    });
   }
   //muestra un aviso. 
   //si se presiona aceptar entonces se debita el saldo de la cuenta del usuario.
@@ -194,6 +236,10 @@ export class PatentesComponent implements OnInit {
   }
   errorNotification(){
     Swal.fire('No se puede iniciar el estacionamiento', 'Su saldo es insuficiente ', 'error')
+  }
+
+  errorDiasNoHabiles(){
+    Swal.fire('No se puede iniciar el estacionamiento', 'No se puede operar en dias no habiles ', 'error')
   }
   
   tinyAlert(){

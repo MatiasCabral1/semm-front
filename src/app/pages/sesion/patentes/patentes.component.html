@@ -27,7 +27,7 @@
                         <td> <h3>{{i+1}}</h3></td>
                         <td>{{h?.numero}}</td>
                         <td>
-                            <button class="btn btn-success" (click)= "iniciarEstacionamiento(i+1)" [disabled]="estacionamientoOn">Iniciar estacionamiento</button>
+                            <button class="btn btn-success" (click)= "verificarEstacionamiento(i+1)" [disabled]="estacionamientoOn">Iniciar estacionamiento</button>
                         </td>
                         <td >
                             <button class="btn btn-danger" (click)="eliminarPatente(i+1)"> Eliminar</button>
@@ -57,7 +57,7 @@
                  <h2> Total a pagar: <br> ${{precio}}<br></h2>
                  </div>
           </div>
-             <button class="btn btn-danger" (click)= "finalizarEstacionamiento()" [disabled]="!estacionamientoOn">Finalizar estacionamiento </button>
+             <button class="btn btn-danger" (click)= "verificarEstacionamiento(1)" [disabled]="!estacionamientoOn">Finalizar estacionamiento </button>
         </div>
       </div>
     
