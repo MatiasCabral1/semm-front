@@ -11,7 +11,7 @@
                 <tr>
                     <th></th>
                     <th scope="col">
-                        <button class="btn btn-lg btn-outline-success" (click)="open()">Registrar patente</button>
+                        <button class="btn btn-lg btn-outline-success" (click)="savePatente()">Registrar patente</button>
                     </th>
                     <th scope="col"> <button class="btn btn-lg btn-outline-success" [routerLink]="['/miCuenta']" routerLinkActive="router-link-active">Mi cuenta</button></th>
                     <th scope="col">Mi saldo ${{saldo}}</th>
@@ -54,10 +54,10 @@
           
           <div class="content">
             <div>
-                <h2>Tiempo transcurrido: <br> {{time.hora + " "}}hs: {{time.minutos+ " "}}min</h2>
+                <h2>Tiempo transcurrido: <br> {{tiempoPrecio.horas + " "}}hs: {{tiempoPrecio.minutos+ " "}}min</h2>
                 </div>
                 <div >
-                 <h2> Total a pagar: <br> ${{precio}}<br></h2>
+                 <h2> Total a pagar: <br> ${{tiempoPrecio.precio}}<br></h2>
                  </div>
           </div>
              <button class="btn btn-danger" (click)= "verificarEstacionamiento(1)" [disabled]="!estacionamientoOn">Finalizar estacionamiento </button>
@@ -71,7 +71,7 @@
       <h1> No hay patentes registradas.</h1>
       <p>Registre una patente para administrar su estacionamiento.</p>
       <ng-container matColumnDef="registrar">
-        <button class="btn btn-lg btn-outline-success" (click)="open()">Registrar patente</button>
+        <button class="btn btn-lg btn-outline-success" (click)="savePatente()">Registrar patente</button>
     </ng-container>
     </div>
   </ng-template>

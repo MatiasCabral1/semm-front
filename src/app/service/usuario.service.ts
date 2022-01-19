@@ -24,10 +24,6 @@ export class UsuarioService {
     return this.http.post<modelPatente>(this.url+'/patentes',this.username);
   }
 
-  public debitar():Observable<any>{
-    return this.http.post<any>(this.url+'/debitar',this.username);
-  }
-
   public cargarSaldo(cuentaCorriente: CuentaCorriente):Observable<any>{
     console.log("monto enviado",cuentaCorriente.saldo);
     return this.http.post<any>(this.url+'/cargarSaldo',cuentaCorriente);

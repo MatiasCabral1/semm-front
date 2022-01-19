@@ -18,12 +18,10 @@ export class HistorialServiceService {
   }
 
   create(historial: Historial):Observable<any>{
-    console.log("Generando historial: ",historial);
     return this.httlClient.post<any>(this.url,historial);
   }
 
   getByCc(id: number):Observable<any>{
-    console.log("se ejecuto el service");    
     return this.httlClient.get<any>(this.url+'/'+id); 
   }
   

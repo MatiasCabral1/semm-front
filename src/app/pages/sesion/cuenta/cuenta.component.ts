@@ -21,7 +21,6 @@ export class CuentaComponent implements OnInit {
   constructor(
     private usuarioService: UsuarioService,
     private tokenService: TokenService,
-    private historialService: HistorialServiceService
   ) {}
 
   ngOnInit(): void {
@@ -66,7 +65,6 @@ export class CuentaComponent implements OnInit {
     }).then((result)=> {
       if (result.value){
         let cc = new CuentaCorriente(+this.cantidad,this.misDatos.cuentaCorriente.telefono);
-        this.cargarHistorial(this.misDatos.cuentaCorriente);
         cc.id = this.misDatos.cuentaCorriente.id;
         this.usuarioService.cargarSaldo(cc).subscribe(data => {
           this.mostrar = false;
@@ -86,12 +84,6 @@ export class CuentaComponent implements OnInit {
     }) 
   }
 
-  private cargarHistorial(cc: CuentaCorriente){
-    let today = new Date();
-    this.historialService.create(new Historial(today.toString(),"Carga",(this.misDatos.cuentaCorriente.saldo+ +this.cantidad),this.cantidad,cc)).subscribe(data=>{
-      console.log("historial generado", data);
-    });
-  }
  private errorMontoNegativo(){
     Swal.fire('El monto ingresado es invalido', 'Debe ingresar un monto mayor a 0')
   }

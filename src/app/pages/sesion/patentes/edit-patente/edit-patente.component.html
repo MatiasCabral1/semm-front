@@ -10,7 +10,7 @@
                     [(ngModel)]="numero" required>
                 </div>
                 <div style="padding: 3px;">
-                    <button type="submit" class="btn btn-success" [disabled]="!f.valid">Registrar patente
+                    <button type="submit" class="btn btn-success"  (click)="closeWindow()" [disabled]="!f.valid">Editar patente
                  </button>
                  <button type="button" class="btn btn-danger" (click)="closeWindow()">volver
                 </button>

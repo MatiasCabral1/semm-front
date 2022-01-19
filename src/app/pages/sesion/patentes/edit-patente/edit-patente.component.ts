@@ -26,12 +26,20 @@ export class EditPatenteComponent implements OnInit {
   }
   editPatente(){
     console.log("patente obtenida desde listado: ", this.numero);
-    if(this.validarExpresiones(this.numero)){
-      this.patente.numero = this.numero;
-    this.patenteService.update(this.patente).subscribe();
+    console.log(this.numero);
+        console.log(this.patente.numero);
+    if(this.numero == this.patente.numero){
+      Swal.fire('No se ha realizado ningun cambio','','info')
+    }else{
+      if(this.validarExpresiones(this.numero)){
+        this.patente.numero = this.numero;
+        this.patenteService.update(this.patente).subscribe(data=>{   
+        this.notificacionGuardado();
+        });
+      }
     }
+    
   }
-
   closeWindow(){
     this.activeModal.close('Close click');
   }
@@ -59,4 +67,13 @@ export class EditPatenteComponent implements OnInit {
   errorNotificationExpresion(){
     Swal.fire('El formato ingresado es invalido', 'Ejemplos de formatos aceptados: "AAA999" - "AA000AA"', 'error')
   }
+
+  notificacionGuardado(){
+    Swal.fire({
+      width: 350,
+      icon: 'success',
+      title: "patente editada correctamente",
+      showConfirmButton: true,
+    })
+}
 }
