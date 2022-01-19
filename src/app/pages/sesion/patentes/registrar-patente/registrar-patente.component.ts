@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { modelPatente } from 'src/app/models/modelPatente';
 import { nuevaPatente } from 'src/app/models/nueva-patente';
 import { PatenteService } from 'src/app/service/patente.service';
 import { TokenService } from 'src/app/service/token.service';
@@ -22,7 +20,6 @@ export class RegistrarPatenteComponent implements OnInit {
   constructor(
     private patenteService: PatenteService,
     private tokenService: TokenService,
-    private router: Router,
     public activeModal: NgbActiveModal
   ) { }
 
@@ -88,7 +85,4 @@ export class RegistrarPatenteComponent implements OnInit {
       }
   })
 }
-  //expresiones regulares AAA999 -> /\D\D\D\d\d\d/gm
-  //formato mercosur -> /\D\D\d\d\d\D\D/gm
-
 }

@@ -6,11 +6,11 @@ import { LoginGuard } from './guards/login.guard';
 import { ProdGuardService } from './guards/prod-guard.service';
 import { CuentaComponent } from './pages/sesion/cuenta/cuenta.component';
 import { HistorialComponent } from './pages/sesion/historial/historial.component';
-import { PatentesComponent } from './pages/sesion/patentes/patentes.component';
+import { PatentesComponent } from './pages/sesion/patentes/listado-patente/patentes.component';
 import { RegistrarPatenteComponent } from './pages/sesion/patentes/registrar-patente/registrar-patente.component';
 
 const routes: Routes = [
- { path: 'sesion', loadChildren: () => import('./pages/sesion/sesion.module').then(m => m.SesionModule) , canActivate: [ProdGuardService]},
+ { path: 'sesion', loadChildren: () => import('./pages/sesion/index/sesion.module').then(m => m.SesionModule) , canActivate: [ProdGuardService]},
  {path: 'login', component: LoginComponent, canActivate: [LoginGuard]},
  {path: 'registro', component: RegistroComponent, canActivate: [LoginGuard]},
  {path: 'listadoPatentes', component: PatentesComponent, canActivate: [ProdGuardService]},

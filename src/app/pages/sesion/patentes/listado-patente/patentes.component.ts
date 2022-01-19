@@ -1,4 +1,4 @@
-import { Component, Input, OnInit,ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit,Output,ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -17,7 +17,8 @@ import { PatenteService } from 'src/app/service/patente.service';
 import { TokenService } from 'src/app/service/token.service';
 import { UsuarioService } from 'src/app/service/usuario.service';
 import Swal from 'sweetalert2';
-import { RegistrarPatenteComponent } from './registrar-patente/registrar-patente.component';
+import { EditPatenteComponent } from '../edit-patente/edit-patente.component';
+import { RegistrarPatenteComponent } from '../registrar-patente/registrar-patente.component';
 
 @Component({
   selector: 'app-patentes',
@@ -25,7 +26,7 @@ import { RegistrarPatenteComponent } from './registrar-patente/registrar-patente
   styleUrls: ['./patentes.component.scss']
 })
 export class PatentesComponent implements OnInit {
-  @Input() name:any;
+  @Output() propagar = new EventEmitter<modelPatente>();
   fechaHabil = false;
   mostrar = true;
   ciudad!:Ciudad;
@@ -51,13 +52,15 @@ export class PatentesComponent implements OnInit {
     private patenteService: PatenteService,
     private historialService: HistorialServiceService,
     private modalService: NgbModal,
-    private diasNoHabiles: DiasNoHabilesService
+    private diasNoHabiles: DiasNoHabilesService,
+    private ciudadService: CiudadService
     ) { }
 
   ngOnInit(): void {
     this.getPatentes();
     this.getSaldo();
     this.getTiempoYprecio();
+    this.getDatosCiudad();
     console.log("contenido de fecha habil: ", this.fechaHabil)
   }
 
@@ -82,7 +85,6 @@ export class PatentesComponent implements OnInit {
   getPatentes():void{
 
     this.usuarioService.getPatentes().subscribe((data: any) =>{
-      console.log(data);
       this.datos = data;
       if(data.length == 0){
         this.mostrar = false;
@@ -108,7 +110,7 @@ export class PatentesComponent implements OnInit {
             if(this.saldo < 10){
               this.errorNotification();
             }else{
-                //si devuelve true entonces estamos en dias habiles y se inicia el estacionamiento.
+              if(this.verificarHora(today.getHours())){
                 this.estacionamiento = new Estacionamiento(today.toString(), true, this.datos[row-1].numero);
                 this.estacionamiento.username = this.tokenService.getUserName()!;
                 //enviamos el estacionamiento-> si devuelve NULL entonces el estacionamiento no se pudo guardar
@@ -120,38 +122,24 @@ export class PatentesComponent implements OnInit {
                 }else{
                       this.tinyAlert();
                   }});
+              }else{
+                this.errorHora();
               }
+              }
+               
     }
     })
   }
 
-  verificarEstacionamiento(row: number){
-    //row es el index para encontrar estacionamiento en la lista.
-    let today = new Date();
-    let dia = today.toString().split(' ')[0];
-    if((dia.match("Sun")) || (dia.match("Sat"))){
-      this.errorDiasNoHabiles();
-    }else{
-      this.verificarDiasHabiles(row,today);
-    }
-  }
-    
     
     
   
-  verificarDiasHabiles(row: number, today: Date){
+  verificarEstacionamiento(row: number){
     //el boton iniciar estacionamiento del html invoca a este metodo
     //obtiene la fecha formateada igual que en la tabla feriado-> ej: "12/1".
     //se reemplaza '/' con '-' porque sino genera problemas con la url y no lo toma como string.
     //llama al metodo getByFecha que devuelve true si el dia actual NO es un dia habil.
-    let fechaFormateada = today.toLocaleDateString().split('/')[0] +"-"+ today.toLocaleDateString().split ('/')[1];
-    console.log("resultado de fecha formateada: ", fechaFormateada);
-    this.diasNoHabiles.getByFecha(fechaFormateada).subscribe((data: boolean)=>{
-      if(data){
-        //no es dia habil
-        this.errorDiasNoHabiles();
-      }else{
-        console.log("que tiene estacionamientoOn?: ",this.estacionamientoOn);
+    let today = new Date();
         if(this.estacionamientoOn){
           console.log("se ejecutara finalizar");
           this.finalizarEstacionamiento();
@@ -159,9 +147,22 @@ export class PatentesComponent implements OnInit {
           console.log("se ejecutara iniciar");
           this.iniciarEstacionamiento(row,today);
         }
-        
-      }
-    });
+  }
+
+  getDatosCiudad(){
+    this.ciudadService.getAll().subscribe((data)=>{
+      this.ciudad = data[0];
+    });;
+  }
+
+  verificarHora(horaInicio: number):boolean{
+    let getHoraDesde=this.ciudad.horariosEstacionamiento.split('-')[0];
+    let getHoraHasta=this.ciudad.horariosEstacionamiento.split('-')[1];
+    if((+horaInicio>=+getHoraDesde)&&(+horaInicio<+getHoraHasta)){
+        return true;
+    }else{
+      return false;
+    }
   }
   //muestra un aviso. 
   //si se presiona aceptar entonces se debita el saldo de la cuenta del usuario.
@@ -229,16 +230,27 @@ export class PatentesComponent implements OnInit {
       this.saldo = data.saldo})
     }
 
+    //editarPatente
+    editPatente(row: number){
+      
+      let patente = this.datos[row-1];
+      console.log("datos de patente a editar: ", patente);
+      this.propagar.emit(patente);
+      const modalRef = this.modalService.open(EditPatenteComponent);
+      modalRef.componentInstance.patente = patente;
+      //this.patenteService.update(patente);
+    }
+
 
   // alertas y notificaciones de sweetAlert2
-  successNotification(){
-    Swal.fire('Hi', 'We have been informed!', 'success')
+  errorHora(){
+    Swal.fire('No se puede iniciar el estacionamiento', 'Fuera del horario operable!', 'error')
   }
   errorNotification(){
     Swal.fire('No se puede iniciar el estacionamiento', 'Su saldo es insuficiente ', 'error')
   }
 
-  errorDiasNoHabiles(){
+  avisoDiasNoHabiles(){
     Swal.fire('No se puede iniciar el estacionamiento', 'No se puede operar en dias no habiles ', 'error')
   }
   
@@ -261,8 +273,7 @@ export class PatentesComponent implements OnInit {
 }
   ///modal
   open() {
-    const modalRef = this.modalService.open(RegistrarPatenteComponent);
-    modalRef.componentInstance.name = 'World';
+    this.modalService.open(RegistrarPatenteComponent);
   }
 
 }

@@ -30,6 +30,9 @@
                             <button class="btn btn-success" (click)= "verificarEstacionamiento(i+1)" [disabled]="estacionamientoOn">Iniciar estacionamiento</button>
                         </td>
                         <td >
+                            <button class="btn btn-danger" (click)="editPatente(i+1)"> Editar</button>
+                        </td>
+                        <td >
                             <button class="btn btn-danger" (click)="eliminarPatente(i+1)"> Eliminar</button>
                         </td>
                 </tr>

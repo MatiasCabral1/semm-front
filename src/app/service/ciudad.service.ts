@@ -9,13 +9,12 @@ export class CiudadService {
   url = "http://localhost:8080/ciudad";
 
   contenido !: []
-  datos!: Ciudad;
 
   constructor(
     private httpClient: HttpClient
   ) { }
 
-  getAll():Observable<Ciudad>{
-    return this.httpClient.get<Ciudad>(this.url);
+  getAll():Observable<Ciudad[]>{
+    return this.httpClient.get<Ciudad[]>(this.url);
   }
 }

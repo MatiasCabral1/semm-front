@@ -1,0 +1,23 @@
+<body>
+    <div class="container d-flex justify-content-center">
+      <div class="card">
+          <div class="card-body">
+            <h1>Editar patente</h1>
+            <form #f="ngForm"  (ngSubmit)="editPatente()" >
+                <div class="form-group">
+                    <label for="numero">número de patente</label>
+                    <input type="text" name="numero" id="numero" class="form-control"
+                    [(ngModel)]="numero" required>
+                </div>
+                <div style="padding: 3px;">
+                    <button type="submit" class="btn btn-success" [disabled]="!f.valid">Registrar patente
+                 </button>
+                 <button type="button" class="btn btn-danger" (click)="closeWindow()">volver
+                </button>
+               
+            </div>    
+            </form>
+          </div>
+      </div>
+  </div>
+</body>

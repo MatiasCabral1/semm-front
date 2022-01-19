@@ -35,9 +35,10 @@ export class HistorialComponent implements OnInit {
         this.historial.forEach(function(h){
           let fecha = new Date(h.horaInicio);
           h.horaInicio = fecha.toLocaleDateString() + '  '+ fecha.toLocaleTimeString();
-          console.log("fecha resultante: ",  h.horaInicio);
-        })
-        //this.historial = new Historial(data.horaInicio,data.tipoOperacion, data.saldoAnterior,data.cuentaCorriente);
+        });
+        //ordeno el historial para que se muestren los ultimos movimientos al principio del listado.
+        this.historial.sort((a, b) => (a.horaInicio < b.horaInicio) ? 1 : -1)
+
       });
     });
     
