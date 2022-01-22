@@ -19,23 +19,23 @@ export class TokenService {
     window.sessionStorage.setItem(TOKEN_KEY,token);
   }
 
-  public setNombre(nombre: string):void{
+  public setName(name: string):void{
     window.sessionStorage.removeItem(NOMBRE_KEY);
-    window.sessionStorage.setItem(NOMBRE_KEY,nombre);
+    window.sessionStorage.setItem(NOMBRE_KEY,name);
   }
-  public getNombre():string | null{
+  public getName():string | null{
     return sessionStorage.getItem(NOMBRE_KEY);
   }
 
   public getToken(): string | null {
     return sessionStorage.getItem(TOKEN_KEY);
   }
-  public setUserName(userName: string): void {
+  public setUsername(username: string): void {
     window.sessionStorage.removeItem(USERNAME_KEY);
-    window.sessionStorage.setItem(USERNAME_KEY, userName);
+    window.sessionStorage.setItem(USERNAME_KEY, username);
   }
 
-  public getUserName(): string | null{
+  public getUsername(): string | null{
     return sessionStorage.getItem(USERNAME_KEY);
   }
 

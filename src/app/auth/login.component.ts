@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { LoginUsuario } from '../models/login-usuario';
+import { LoginUser } from '../models/LoginUser';
 import { AuthService } from '../service/auth.service';
 import { TokenService } from '../service/token.service';
-import { UsuarioService } from '../service/usuario.service';
+import { UserService } from '../service/User.Service';
 
 @Component({
   selector: 'app-login',
@@ -15,8 +15,8 @@ export class LoginComponent implements OnInit {
 
   isLogged = false;
   isLoginFail = false;
-  loginUsuario! : LoginUsuario;
-  nombreUsuario!: string;
+  loginUser! : LoginUser;
+  username!: string;
   password!: string;
   roles: string[] | null = [];
   errMsj!: string;
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
     private tokenService: TokenService,
     private authService: AuthService,
     private router: Router,
-    private usuarioService: UsuarioService
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
@@ -37,11 +37,11 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin():void{
-    this.loginUsuario = new LoginUsuario(this.nombreUsuario,this.password);
-    this.authService.login(this.loginUsuario).subscribe(data => {
+    this.loginUser = new LoginUser(this.username,this.password);
+    this.authService.login(this.loginUser).subscribe(data => {
       this.isLogged = true;
       this.isLoginFail = false;
-      this.setDatosUsuario(data);
+      this.setUserData(data);
       this.roles = data.authorities;
       this.router.navigate(['/sesion']);
     },
@@ -58,11 +58,11 @@ export class LoginComponent implements OnInit {
     }
     );
   }
-  setDatosUsuario(data: any){ 
+  setUserData(data: any){ 
     this.tokenService.setToken(data.token);
-    this.tokenService.setUserName(data.nombreUsuario);
-    this.usuarioService.getDatos(data.nombreUsuario).subscribe(data =>{
-      this.tokenService.setNombre(data.nombre);
+    this.tokenService.setUsername(data.username);
+    this.userService.getData(data.username).subscribe(data =>{
+      this.tokenService.setName(data.name);
     });
     
   }

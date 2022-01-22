@@ -10,17 +10,17 @@ import { TokenService } from 'src/app/service/token.service';
 export class NavBarComponent implements OnInit {
 
   isLogged = false;
-  nombreUsuario: string | null = '';
+  username!: string;
 
   constructor(private tokenService: TokenService, private router: Router) { }
 
   ngOnInit() {
     if (this.tokenService.getToken()) {
       this.isLogged = true;
-      this.nombreUsuario = this.tokenService.getNombre();
+      this.username = this.tokenService.getName()!;
     } else {
       this.isLogged = false;
-      this.nombreUsuario = '';
+      this.username = '';
     }
   }
   onLogOut(): void {

@@ -3,14 +3,14 @@
       <div class="card">
           <div class="card-body">
             <h1>Registro de nueva patente</h1>
-            <form #f="ngForm"  (ngSubmit)="registrarPatente()" >
+            <form #f="ngForm"  (ngSubmit)="savePatent()" >
                 <div class="form-group">
-                    <label for="numero">número de patente</label>
-                    <input type="text" name="numero" id="numero" class="form-control"
-                    [(ngModel)]="numero" required>
+                    <label for="number">número de patente</label>
+                    <input type="text" name="number" id="number" class="form-control"
+                    [(ngModel)]="number" required>
                 </div>
                 <div style="padding: 3px;">
-                    <button type="submit" class="btn btn-success" [routerLink]="['/listadoPatentes']" routerLinkActive="router-link-active" [disabled]="!f.valid">Registrar patente
+                    <button type="submit" class="btn btn-success" [routerLink]="['/listPatents']" routerLinkActive="router-link-active" [disabled]="!f.valid">Registrar patente
                  </button>
                  <button type="button" class="btn btn-danger" (click)="activeModal.close('Close click')">volver
                 </button>

@@ -3,11 +3,11 @@
       <div class="card">
           <div class="card-body">
             <h1>Editar patente</h1>
-            <form #f="ngForm"  (ngSubmit)="editPatente()" >
+            <form #f="ngForm"  (ngSubmit)="editPatent()" >
                 <div class="form-group">
-                    <label for="numero">número de patente</label>
-                    <input type="text" name="numero" id="numero" class="form-control"
-                    [(ngModel)]="numero" required>
+                    <label for="number">número de patente</label>
+                    <input type="text" name="number" id="number" class="form-control"
+                    [(ngModel)]="namePatent" required>
                 </div>
                 <div style="padding: 3px;">
                     <button type="submit" class="btn btn-success"  (click)="closeWindow()" [disabled]="!f.valid">Editar patente

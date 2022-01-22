@@ -12,18 +12,18 @@ import { MaterialModule } from './material.module';
 import { NavBarComponent } from './pages/sesion/nav-bar/nav-bar.component';
 import { CommonModule } from '@angular/common';
 import { LoginComponent } from './auth/login.component';
-import { RegistroComponent } from './auth/registro.component';
-import { PatentesComponent } from './pages/sesion/patentes/listado-patente/patentes.component';
+import { RegisterComponent } from './auth/register.component';
+import { PatentsComponent } from './pages/sesion/patentes/list-patents/patents.component';
 
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import {AuthInterceptorServiceProvider } from './interceptors/auth-interceptor.service';
-import { RegistrarPatenteComponent } from './pages/sesion/patentes/registrar-patente/registrar-patente.component';
-import { CuentaComponent } from './pages/sesion/cuenta/cuenta.component';
-import { HistorialComponent } from './pages/sesion/historial/historial.component';
+import { AccountComponent } from './pages/sesion/cuenta/account.component';
+import { HistoryComponent } from './pages/sesion/historial/history.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { EditPatenteComponent } from './pages/sesion/patentes/edit-patente/edit-patente.component';
+import { EditPatentComponent } from './pages/sesion/patentes/edit-patent/edit-patent.component';
+import { RegisterPatentComponent } from './pages/sesion/patentes/registrar-patente/register-patent.component';
 
 @NgModule({
   declarations: [
@@ -31,12 +31,12 @@ import { EditPatenteComponent } from './pages/sesion/patentes/edit-patente/edit-
     SesionComponent,
     NavBarComponent,
     LoginComponent,
-    RegistroComponent,
-    PatentesComponent,
-    RegistrarPatenteComponent,
-    CuentaComponent,
-    HistorialComponent,
-    EditPatenteComponent
+    RegisterComponent,
+    PatentsComponent,
+    RegisterPatentComponent,
+    AccountComponent,
+    HistoryComponent,
+    EditPatentComponent
   ],
   imports: [
     AppRoutingModule,

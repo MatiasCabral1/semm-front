@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Historial } from '../models/Historial';
+import { History } from '../models/History';
 
 @Injectable({
   providedIn: 'root'
 })
-export class HistorialServiceService {
-  url = "http://localhost:8080/historial";
+export class HistoryService {
+  url = "http://localhost:8080/history";
 
   constructor(
     private httlClient: HttpClient
@@ -17,8 +17,8 @@ export class HistorialServiceService {
     return this.httlClient.get<any>(this.url);
   }
 
-  create(historial: Historial):Observable<any>{
-    return this.httlClient.post<any>(this.url,historial);
+  create(history: History):Observable<any>{
+    return this.httlClient.post<any>(this.url,history);
   }
 
   getByCc(id: number):Observable<any>{

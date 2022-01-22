@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { NuevoUsuario } from '../models/nuevo-usuario';
+import { NewUser } from '../models/newUser';
 import { AuthService } from '../service/auth.service';
 import { TokenService } from '../service/token.service';
 
 @Component({
-  selector: 'app-registro',
-  templateUrl: './registro.component.html',
-  styleUrls: ['./registro.component.scss']
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
 })
-export class RegistroComponent implements OnInit {
+export class RegisterComponent implements OnInit {
 
-  nuevoUsuario!: NuevoUsuario;
-  nombre!: string;
-  nombreUsuario!: string;
+  newUser!: NewUser;
+  name!: string;
+  username!: string;
   email!: string;
   password!: string;
   errMsj!: string;
@@ -33,8 +33,8 @@ export class RegistroComponent implements OnInit {
   }
 
   onRegister(): void {
-    this.nuevoUsuario = new NuevoUsuario(this.nombre, this.nombreUsuario, this.email, this.password);
-    this.authService.nuevo(this.nuevoUsuario).subscribe(
+    this.newUser = new NewUser(this.name, this.username, this.email, this.password);
+    this.authService.save(this.newUser).subscribe(
       data => {
         this.router.navigate(['/login']);
       },

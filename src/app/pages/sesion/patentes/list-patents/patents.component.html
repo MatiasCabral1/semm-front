@@ -2,7 +2,7 @@
 
 
 
-<div class="container d-flex justify-content-between" *ngIf="mostrar ;else listadoVacio">
+<div class="container d-flex justify-content-between" *ngIf="show ;else emptyList">
     
         <table class="table">
             <h1>Listado de sus patentes registradas</h1>
@@ -11,10 +11,10 @@
                 <tr>
                     <th></th>
                     <th scope="col">
-                        <button class="btn btn-lg btn-outline-success" (click)="savePatente()">Registrar patente</button>
+                        <button class="btn btn-lg btn-outline-success" (click)="savePatent()">Registrar patente</button>
                     </th>
-                    <th scope="col"> <button class="btn btn-lg btn-outline-success" [routerLink]="['/miCuenta']" routerLinkActive="router-link-active">Mi cuenta</button></th>
-                    <th scope="col">Mi saldo ${{saldo}}</th>
+                    <th scope="col"> <button class="btn btn-lg btn-outline-success" [routerLink]="['/myAccount']" routerLinkActive="router-link-active">Mi cuenta</button></th>
+                    <th scope="col">Mi saldo ${{balance}}</th>
                 </tr>
                 <tr>
                 <th scope="col">#</th>
@@ -23,17 +23,17 @@
                 </tr>
             </thead>
             <tbody >
-                <tr *ngFor="let h of datos | slice: (page-1) * pageSize : page * pageSize; index as i">   
+                <tr *ngFor="let h of listPatents | slice: (page-1) * pageSize : page * pageSize; index as i">   
                         <td> <h3>{{i+1}}</h3></td>
-                        <td>{{h?.numero}}</td>
+                        <td>{{h?.number}}</td>
                         <td>
-                            <button class="btn btn-success" (click)= "verificarEstacionamiento(i+1)" [disabled]="estacionamientoOn">Iniciar estacionamiento</button>
+                            <button class="btn btn-success" (click)= "verifyParking(i+1)" [disabled]="parkingOn">Iniciar estacionamiento</button>
                         </td>
                         <td >
-                            <button class="btn btn-danger" (click)="editPatente(i+1)"> Editar</button>
+                            <button class="btn btn-danger" (click)="editPatent(i+1)" > Editar</button>
                         </td>
                         <td >
-                            <button class="btn btn-danger" (click)="eliminarPatente(i+1)"> Eliminar</button>
+                            <button class="btn btn-danger" (click)="deletePatent(i+1)"> Eliminar</button>
                         </td>
                 </tr>
             </tbody>
@@ -41,37 +41,37 @@
             <ngb-pagination 
             [(page)]="page"
             [pageSize]="pageSize"
-            [collectionSize]="datos.length" >
+            [collectionSize]="listPatents.length" >
             </ngb-pagination>
         
         </div>
     </table>
     <!-- VENTANA DONDE SE MUESTRA EL BOTON FINALIZAR ESTACIONAMIENTO Y CONTADOR DE TIEMPO TRANSCURRIDO -->
-    <div class="card text-center" style="width: 20rem;" *ngIf="estacionamientoOn">
+    <div class="card text-center" style="width: 20rem;" *ngIf="parkingOn">
         <div class="card-body">
           <h2 class="card-title">Estacionamiento iniciado</h2>
           <h3 class="card-subtitle mb-2 text-muted">Recordatorio: Para iniciar un estacionamiento con otra patente primero debe finalizar el actual.</h3>
           
           <div class="content">
             <div>
-                <h2>Tiempo transcurrido: <br> {{tiempoPrecio.horas + " "}}hs: {{tiempoPrecio.minutos+ " "}}min</h2>
+                <h2>Tiempo transcurrido: <br> {{TimePrice.hours + " "}}hs: {{TimePrice.minutes+ " "}}min</h2>
                 </div>
                 <div >
-                 <h2> Total a pagar: <br> ${{tiempoPrecio.precio}}<br></h2>
+                 <h2> Total a pagar: <br> ${{TimePrice.price}}<br></h2>
                  </div>
           </div>
-             <button class="btn btn-danger" (click)= "verificarEstacionamiento(1)" [disabled]="!estacionamientoOn">Finalizar estacionamiento </button>
+             <button class="btn btn-danger" (click)= "verifyParking(1)" [disabled]="!parkingOn">Finalizar estacionamiento </button>
         </div>
       </div>
     
 </div>
 
-<ng-template #listadoVacio>
+<ng-template #emptyList>
     <div class="containerVacio">
       <h1> No hay patentes registradas.</h1>
       <p>Registre una patente para administrar su estacionamiento.</p>
       <ng-container matColumnDef="registrar">
-        <button class="btn btn-lg btn-outline-success" (click)="savePatente()">Registrar patente</button>
+        <button class="btn btn-lg btn-outline-success" (click)="savePatent()">Registrar patente</button>
     </ng-container>
     </div>
   </ng-template>

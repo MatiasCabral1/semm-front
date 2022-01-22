@@ -1,14 +1,12 @@
-export class Estacionamiento{
+export class Parking{
     id!: number;
-    horaInicio: string;
-    precioFinal!: number;
-    ciudadId!: number;
-    iniciado: boolean;
-    patente: string;
+    date: string;
+    started: boolean;
+    patent: string;
     username!: string;
-    constructor(horaInicio: string, iniciado:boolean, patente: string){
-        this.horaInicio = horaInicio;
-        this.iniciado = iniciado;
-        this.patente = patente;
+    constructor(date: string, started:boolean, patent: string){
+        this.date = date;
+        this.started = started;
+        this.patent = patent;
     }
 }

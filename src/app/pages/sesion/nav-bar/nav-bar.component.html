@@ -4,7 +4,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
   <div class="navbar-brand d-inline-flex p-2">
-    <div *ngIf="isLogged; else loggedOut"><h4>Bienvenido {{nombreUsuario}}</h4></div>
+    <div *ngIf="isLogged; else loggedOut"><h4>Bienvenido {{username}}</h4></div>
     <ng-template #loggedOut><h4>No has iniciado sesión</h4></ng-template>
  </div>
 
@@ -17,7 +17,7 @@
           <a class="nav-link"  routerLink="/login"><i class="fas fa-sign-in-alt"></i> Inicio</a>
         </li>
       <li class="nav-item" *ngIf="isLogged">
-        <a class="nav-link" routerLink="/listadoPatentes"><i class="far fa-list-alt"></i> Listado de patentes</a>
+        <a class="nav-link" routerLink="/listPatents"><i class="far fa-list-alt"></i> Listado de patentes</a>
       </li>
       <li class="nav-item" *ngIf="!isLogged">
           <a class="nav-link"  routerLink="/login"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</a>

@@ -1,24 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { nuevaPatente } from 'src/app/models/nueva-patente';
-import { PatenteService } from 'src/app/service/patente.service';
+import { NewPatentDTO } from 'src/app/models/DTONewPatent';
+import { Patent } from 'src/app/models/Patent';
+import { PatentService } from 'src/app/service/Patent.service';
 import { TokenService } from 'src/app/service/token.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-registrar-patente',
-  templateUrl: './registrar-patente.component.html',
-  styleUrls: ['./registrar-patente.component.scss']
+  selector: 'app-register-patent',
+  templateUrl: './register-patent.component.html',
+  styleUrls: ['./register-patent.component.scss']
 })
-export class RegistrarPatenteComponent implements OnInit {
- numero!: any;
- usuarioPatente! : nuevaPatente;
- expresiones = {
-   tipo1: /([a-zA-Z]{3}\d{3})|([a-zA-Z]{2}\d{3}[a-zA-Z]{2})/,
+export class RegisterPatentComponent implements OnInit {
+ number!: any;
+ newPatent! : Patent;
+ expression = {
+   type1: /([a-zA-Z]{3}\d{3})|([a-zA-Z]{2}\d{3}[a-zA-Z]{2})/,
  }
 
   constructor(
-    private patenteService: PatenteService,
+    private patentService: PatentService,
     private tokenService: TokenService,
     public activeModal: NgbActiveModal
   ) { }
@@ -26,43 +27,44 @@ export class RegistrarPatenteComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  registrarPatente(){
-    if(this.validarExpresiones(this.numero)){
-      this.usuarioPatente = new nuevaPatente(this.numero,this.tokenService.getUserName()!);
-      this.patenteService.create(this.numero,this.tokenService.getUserName()!).subscribe((data: any) => {
-        this.notificacionGuardado();
+  savePatent(){
+    if(this.validateExpression(this.number)){
+      this.newPatent = new Patent(this.number,this.tokenService.getUsername()!);
+      this.patentService.create(this.number,this.tokenService.getUsername()!).subscribe((data: any) => {
+        console.log("patente registrada: ", this.newPatent);
+        this.notifySave();
       },
       err =>{
-        this.errorEnGuardado(err.error.mensaje);
+        this.errorSave(err.error.mensaje);
       }); 
     }
   }
 
-  validarExpresiones(patente: any): boolean{
+  validateExpression(patent: any): boolean{
     //valida que la patente ingresada cumpla con el formato tipo1
     // si no lo cumple lo informa en pantalla.
     //en validation[0] se almacena el valor que hizo coincidencia con la expresion. 
     //si el valor almacenado es distinto de la patente entonces la patente ingresada contiene mas caracteres que los pedidos en la expresion. Por lo tanto es incorrecta
-    const validation1 = patente.match(this.expresiones.tipo1);
+    const validation1 = patent.match(this.expression.type1);
     if(validation1 != null){
-      if(validation1[0] == patente){
+      if(validation1[0] == patent){
         return true;
       }else{
-        this.errorNotificationExpresion();
+        this.errorExpression();
         return false;
       }
     }
     //emitir alerta de que formato debe cumplir.
-    this.errorNotificationExpresion();
+    this.errorExpression();
     return false;
       
   }
   
-  errorNotificationExpresion(){
+  errorExpression(){
     Swal.fire('El formato ingresado es invalido', 'Ejemplos de formatos aceptados: "AAA999" - "AA000AA"', 'error')
   }
 
-  errorEnGuardado(mensaje: string){
+  errorSave(mensaje: string){
     console.log(mensaje);
     Swal.fire({
       width: 350,
@@ -73,7 +75,7 @@ export class RegistrarPatenteComponent implements OnInit {
     })
   }
 
-  notificacionGuardado(){
+  notifySave(){
     Swal.fire({
       width: 350,
       icon: 'success',

@@ -10,7 +10,7 @@
                       <h4 class="mb-0">Nombre </h4>
                     </div>
                     <div class="col-sm-9 text-primary">
-                      {{misDatos?.nombre}}
+                      {{currentAccountData?.name}}
                     </div>
                   </div>
                   <hr>
@@ -20,7 +20,7 @@
                       <h4 class="mb-0">Telefono</h4>
                     </div>
                     <div class="col-sm-9 text-primary">
-                      {{misDatos?.nombreUsuario}}
+                      {{currentAccountData?.username}}
                     </div>
                   </div>
                   <hr>
@@ -30,7 +30,7 @@
                       <h4 class="mb-0">Email</h4>
                     </div>
                     <div class="col-sm-9 text-primary">
-                      {{misDatos?.email}}
+                      {{currentAccountData?.email}}
                     </div>
                   </div>
                   <hr>
@@ -49,17 +49,17 @@
                       <hr>
                       <h4 class="mb-0">Balance actual</h4>
                       <hr>
-                      <div *ngIf="1 > 0; else cuentaVacia">
-                      <h1> ${{misDatos?.cuentaCorriente?.saldo}}</h1> 
+                      <div *ngIf="1 > 0; else AccountEmpty">
+                      <h1> ${{currentAccountData?.currentAccount?.balance}}</h1> 
                     </div>
-                    <ng-template #cuentaVacia>
+                    <ng-template #AccountEmpty>
                       <h1> $0 </h1> 
                       <h4> Aun no ha realizado ninguna carga </h4> 
                     </ng-template>
                       <hr>
                       <div class= "d-flex flex-column ">
-                        <button class="btn btn-primary" (click)= "mostrar = true">Cargar</button>
-                        <button class="btn btn-primary mt-3" [routerLink]="['/historial']" routerLinkActive="router-link-active" >Historial</button>
+                        <button class="btn btn-primary" (click)= "show = true">Cargar</button>
+                        <button class="btn btn-primary mt-3" [routerLink]="['/history']" routerLinkActive="router-link-active" >Historial</button>
                       
                       </div>
                       </div>
@@ -67,7 +67,7 @@
                 </div>
               </div>
           </div>
-          <div class="card" *ngIf="mostrar">
+          <div class="card" *ngIf="show">
             <div class="card-body">
               <div class="text-center">
                 <h3>Ingrese monto a cargar</h3>
@@ -78,12 +78,12 @@
                   <div class="input">
                     <span class="input-group-text">$</span>
                   </div>
-                  <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" 
-                   [(ngModel)]="cantidad">
+                  <input type="number" min="100" class="form-control" aria-label="Amount (to the nearest dollar)" 
+                   [(ngModel)]="amount">
                 </div>
                 <div class="flex-column">
-                   <button class="btn btn-success" (click)= "cargarSaldo()">Aceptar</button>
-                   <button class="btn btn-danger" (click)= "mostrar = false">Cancelar</button>
+                   <button class="btn btn-success" (click)= "chargeBalance()">Aceptar</button>
+                   <button class="btn btn-danger" (click)= "show = false">Cancelar</button>
                   </div>
               </div>
             </div>
