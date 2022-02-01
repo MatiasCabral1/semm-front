@@ -30,7 +30,7 @@ export class RegisterPatentComponent implements OnInit {
   savePatent(){
     if(this.validateExpression(this.number)){
       this.newPatent = new Patent(this.number,this.tokenService.getUsername()!);
-      this.patentService.create(this.number,this.tokenService.getUsername()!).subscribe((data: any) => {
+      this.patentService.create(this.newPatent).subscribe((data: any) => {
         console.log("patente registrada: ", this.newPatent);
         this.notifySave();
       },

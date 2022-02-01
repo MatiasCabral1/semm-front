@@ -32,15 +32,14 @@ export class EditPatentComponent implements OnInit {
   editPatent(){
     console.log(this.number);
         console.log(this.patent.number);
-    if(this.number == this.patent.number){
-      Swal.fire('No se ha realizado ningun cambio','','info')
-    }else{
-      //if(this.validateExpression(this.number)){
-        
+    //if(this.number == this.patent.number){
+      //Swal.fire('No se ha realizado ningun cambio','','info')
+    //}else{
+      if(this.validateExpression(this.number)){
         this.patent.number = this.namePatent;  
-        console.log("contenido de patente: ", this.patent);
-        this.patentService.update(this.patent).subscribe(data=>{   
-          console.log("editado exitoso");
+        let patenteEdit = new Patent(this.patent.number, this.tokenService.getUsername()!);
+        patenteEdit.id = this.patent.id;
+        this.patentService.update(patenteEdit).subscribe(data=>{   
            this.notificacionSaved();
         },err=>{
           console.log("error de editado: ",err);
@@ -107,6 +106,10 @@ export class EditPatentComponent implements OnInit {
       icon: 'success',
       title: "patente editada correctamente",
       showConfirmButton: true,
-    })
+    }).then((result)=> {
+      if (result.value){
+        window.location.reload();
+      }
+  })
 }
 }

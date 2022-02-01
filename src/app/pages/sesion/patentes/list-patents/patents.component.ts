@@ -125,8 +125,9 @@ export class PatentsComponent implements OnInit {
   }
 
   deletePatent(row: number){
-    let patent = this.listPatents[row-1].number;
-    this.patentService.delete(patent,this.tokenService.getUsername()!).subscribe(data=>{
+    let patent = this.listPatents[row-1];
+    console.log("patente: ", patent);
+    this.patentService.delete(patent.id).subscribe(data=>{
       this.alertDelete(data.mensaje);
     },err=>{
       this.errorDelete(err.error.mensaje);
