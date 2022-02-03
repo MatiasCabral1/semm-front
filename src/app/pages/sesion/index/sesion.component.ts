@@ -1,24 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenService } from 'src/app/service/token.service';
+import { UserService } from 'src/app/service/User.Service';
 
 @Component({
   selector: 'app-sesion',
   templateUrl: './sesion.component.html',
-  styleUrls: ['./sesion.component.scss']
+  styleUrls: ['./sesion.component.scss'],
 })
 export class SesionComponent implements OnInit {
-  constructor(
-    private tokenService: TokenService,
-  ){}
+  name!: string;
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
     this.refreshSession();
-  } 
-  public refreshSession(){
-    console.log("username",this.tokenService.getUsername());
-    let username = this.tokenService.getUsername()!;
-    this.tokenService.setUsername(username);
   }
-
- 
+  public refreshSession() {
+    this.userService.getData().subscribe((data) => {
+      console.log('contenido traido del usuario en nav-var: ', data);
+      this.name = data.name;
+    });
+  }
 }

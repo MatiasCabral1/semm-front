@@ -8,17 +8,13 @@ import { FormsModule } from '@angular/forms';
 import { SesionComponent } from './pages/sesion/index/sesion.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from './material.module';
 import { NavBarComponent } from './pages/sesion/nav-bar/nav-bar.component';
 import { CommonModule } from '@angular/common';
 import { LoginComponent } from './auth/login.component';
 import { RegisterComponent } from './auth/register.component';
 import { PatentsComponent } from './pages/sesion/patentes/list-patents/patents.component';
 
-import { MatTableModule } from '@angular/material/table';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import {AuthInterceptorServiceProvider } from './interceptors/auth-interceptor.service';
+import { AuthInterceptorServiceProvider } from './interceptors/auth-interceptor.service';
 import { AccountComponent } from './pages/sesion/cuenta/account.component';
 import { HistoryComponent } from './pages/sesion/historial/history.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -36,7 +32,7 @@ import { RegisterPatentComponent } from './pages/sesion/patentes/registrar-paten
     RegisterPatentComponent,
     AccountComponent,
     HistoryComponent,
-    EditPatentComponent
+    EditPatentComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -44,15 +40,10 @@ import { RegisterPatentComponent } from './pages/sesion/patentes/registrar-paten
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
-    MaterialModule,
     CommonModule,
-    MatTableModule,
-    MatInputModule,
-    MatButtonModule,
     NgbModule,
- 
   ],
   providers: [AuthInterceptorServiceProvider],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

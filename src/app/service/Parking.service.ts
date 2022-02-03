@@ -2,33 +2,31 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Parking } from '../models/Estacionamiento';
-import { TokenService } from './token.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ParkingService {
-  URL = 'http://localhost:8080/parking';
+  parkingURL = environment.parkingURL;
 
-  constructor(
-    private httpClient: HttpClient,
-    private tokenService: TokenService
-  ){ }
+  constructor(private httpClient: HttpClient) {}
 
-  public save(parking: Parking): Observable<any>{
-    return this.httpClient.post<any>(this.URL + '/save', parking);
+  public save(parking: Parking): Observable<any> {
+    return this.httpClient.post<any>(this.parkingURL + '/save', parking);
   }
 
-  public endParking(): Observable<any>{
-    return this.httpClient.get<any>(this.URL + '/endParking/'+this.tokenService.getUsername());
+  public endParking(id: number): Observable<any> {
+    return this.httpClient.get<any>(this.parkingURL + '/endParking/' + id);
   }
 
-  public getTime():Observable<any>{
-    return this.httpClient.get<any>(this.URL + '/getTime/'+this.tokenService.getUsername());
+  public getTime(id: number): Observable<any> {
+    return this.httpClient.get<any>(this.parkingURL + '/getTime/' + id);
   }
 
-  public getParkingStartedByUser():Observable<any>{
-    return this.httpClient.get<any>(this.URL + '/getParkingStartedByUser/'+this.tokenService.getUsername());
+  public getParkingStartedByUser(id: number): Observable<any> {
+    return this.httpClient.get<any>(
+      this.parkingURL + '/getParkingStartedByUser/' + id
+    );
   }
-
 }

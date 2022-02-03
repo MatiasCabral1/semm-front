@@ -10,18 +10,46 @@ import { PatentsComponent } from './pages/sesion/patentes/list-patents/patents.c
 import { RegisterPatentComponent } from './pages/sesion/patentes/registrar-patente/register-patent.component';
 
 const routes: Routes = [
- { path: 'sesion', loadChildren: () => import('./pages/sesion/index/sesion.module').then(m => m.SesionModule) , canActivate: [ProdGuardService]},
- {path: 'login', component: LoginComponent, canActivate: [LoginGuard]},
- {path: 'register', component: RegisterComponent, canActivate: [LoginGuard]},
- {path: 'listPatents', component: PatentsComponent, canActivate: [ProdGuardService]},
- {path: 'myAccount', component: AccountComponent, canActivate: [ProdGuardService]},
- {path: 'registerPatent', component: RegisterPatentComponent, canActivate: [ProdGuardService]},
- {path: 'history', component: HistoryComponent, canActivate: [ProdGuardService]},
- { path: '**', redirectTo: 'login', pathMatch: 'full'},
+  {
+    path: 'sesion',
+    loadChildren: () =>
+      import('./pages/sesion/index/sesion.module').then((m) => m.SesionModule),
+    canActivate: [ProdGuardService],
+  },
+  { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
+  { path: 'register', component: RegisterComponent, canActivate: [LoginGuard] },
+  {
+    path: 'listPatents',
+    component: PatentsComponent,
+    canActivate: [ProdGuardService],
+  },
+  {
+    path: 'myAccount',
+    component: AccountComponent,
+    canActivate: [ProdGuardService],
+  },
+  {
+    path: 'registerPatent',
+    component: RegisterPatentComponent,
+    canActivate: [ProdGuardService],
+  },
+  {
+    path: 'history',
+    component: HistoryComponent,
+    canActivate: [ProdGuardService],
+  },
+  {
+    path: '',
+    // If this path is the 'full' match...
+    pathMatch: 'full',
+    // ...redirect to this route.
+    redirectTo: 'login',
+  },
+  { path: '**', redirectTo: 'login', pathMatch: 'full' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

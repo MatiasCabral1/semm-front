@@ -1,31 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TokenService } from 'src/app/service/token.service';
+import { UserService } from 'src/app/service/User.Service';
 
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.scss']
+  styleUrls: ['./nav-bar.component.scss'],
 })
 export class NavBarComponent implements OnInit {
-
   isLogged = false;
-  username!: string;
 
-  constructor(private tokenService: TokenService, private router: Router) { }
+  constructor(
+    private tokenService: TokenService,
+    private router: Router,
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
-    if (this.tokenService.getToken()) {
-      this.isLogged = true;
-      this.username = this.tokenService.getName()!;
-    } else {
-      this.isLogged = false;
-      this.username = '';
-    }
+    this.setDataSession();
   }
   onLogOut(): void {
     this.tokenService.logOut();
-    this.router.navigateByUrl("/login");
+    this.router.navigateByUrl('/login');
   }
 
+  setDataSession() {
+    if (this.tokenService.getToken()) {
+      this.isLogged = true;
+    } else {
+      this.isLogged = false;
+    }
+  }
 }

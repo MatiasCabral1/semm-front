@@ -9,13 +9,12 @@ import { UserService } from '../service/User.Service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-
   isLogged = false;
   isLoginFail = false;
-  loginUser! : LoginUser;
+  loginUser!: LoginUser;
   username!: string;
   password!: string;
   roles: string[] | null = [];
@@ -24,47 +23,43 @@ export class LoginComponent implements OnInit {
   constructor(
     private tokenService: TokenService,
     private authService: AuthService,
-    private router: Router,
-    private userService: UserService
-  ) { }
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    if(this.tokenService.getToken()){
+    if (this.tokenService.getToken()) {
       this.isLogged = true;
       this.isLoginFail = false;
-      this.roles = this.tokenService.getAuthorities();
     }
   }
 
-  onLogin():void{
-    this.loginUser = new LoginUser(this.username,this.password);
-    this.authService.login(this.loginUser).subscribe(data => {
-      this.isLogged = true;
-      this.isLoginFail = false;
-      this.setUserData(data);
-      this.roles = data.authorities;
-      this.router.navigate(['/sesion']);
-    },
-    err => {
-      this.isLogged = false;
-      this.isLoginFail = true;
-      Swal.fire({
-        width: 350,
-        icon: 'error',
-        title: err.error.mensaje,
-        showConfirmButton: false,
-        timer: 2500,
-      })
-    }
+  onLogin(): void {
+    this.loginUser = new LoginUser(this.username, this.password);
+    this.authService.login(this.loginUser).subscribe(
+      (data) => {
+        this.isLogged = true;
+        this.isLoginFail = false;
+        this.setUserData(data);
+        this.roles = data.authorities;
+        this.router.navigate(['/sesion']);
+      },
+      (err) => {
+        this.isLogged = false;
+        this.isLoginFail = true;
+        Swal.fire({
+          width: 350,
+          icon: 'error',
+          title: err.error.mensaje,
+          showConfirmButton: false,
+          timer: 2500,
+        });
+      }
     );
   }
-  setUserData(data: any){ 
+  setUserData(data: any) {
     this.tokenService.setToken(data.token);
-    this.tokenService.setUsername(data.username);
-    this.userService.getData(data.username).subscribe(data =>{
-      this.tokenService.setName(data.name);
-    });
-    
+    //this.userService.getUserByUsername().subscribe(data =>{
+    //console.log("contenido de data: ", data);
+    //});
   }
-
 }

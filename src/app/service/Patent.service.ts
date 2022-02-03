@@ -3,41 +3,36 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Patent } from '../models/Patent';
 import { NewPatentDTO } from '../models/DTONewPatent';
-import { TokenService } from './token.service';
-
+import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PatentService {
-  url = "http://localhost:8080/patent";
+  patentURL = environment.PatentURL;
   newPatentDTO!: NewPatentDTO;
-  constructor(
-    private http: HttpClient,
-    private tokenService: TokenService
-    ) {}
- 
-  ngOnInit(){ }
-  
-  getAll():Observable<Patent>{
-    return this.http.get<Patent>(this.url);
+  constructor(private http: HttpClient) {}
+
+  ngOnInit() {}
+
+  getAll(): Observable<Patent> {
+    return this.http.get<Patent>(this.patentURL);
   }
 
-  create(patent: Patent):Observable<any>{
-    return this.http.post<any>(this.url+'/save',patent);
+  create(patent: Patent): Observable<any> {
+    return this.http.post<any>(this.patentURL + '/save', patent);
   }
 
-    delete(id: number):Observable<any>{
-    return this.http.delete<any>(this.url+'/'+id);
+  delete(id: number): Observable<any> {
+    return this.http.delete<any>(this.patentURL + '/' + id);
   }
 
-  get(id: number):Observable<Patent>{
-    return this.http.get<Patent>(this.url+'/'+id); 
+  get(id: number): Observable<Patent> {
+    return this.http.get<Patent>(this.patentURL + '/' + id);
   }
-  
 
-  update(patent: Patent): Observable<Patent>{
-    console.log("contenido de patente en service: ", patent);
-    return this.http.put<Patent>(this.url + '/' + patent.id, patent);
+  update(patent: Patent): Observable<Patent> {
+    console.log('contenido de patente en service: ', patent);
+    return this.http.put<Patent>(this.patentURL + '/' + patent.id, patent);
   }
 }

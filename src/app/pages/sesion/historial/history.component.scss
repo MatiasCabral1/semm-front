@@ -1,8 +1,17 @@
-.containerVacio{
-    text-align: center;
-    background: rgba(255, 255, 255, 0.9);
-    padding-top: 30px;
-    padding-bottom: 30px;
-    margin-bottom: 50px;
-    border-top: 4px solid #3fbbc0;
+.containerVacio {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.9);
+  padding-top: 30px;
+  padding-bottom: 30px;
+  margin-bottom: 50px;
+  border-top: 4px solid #3fbbc0;
+}
+h1 {
+  font-size: 2rem;
+}
+h2 {
+  font-size: 1.5rem;
+}
+h3 {
+  font-size: 1rem;
 }

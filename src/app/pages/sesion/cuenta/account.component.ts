@@ -8,17 +8,16 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-Account',
   templateUrl: './account.component.html',
-  styleUrls: ['./account.component.scss']
+  styleUrls: ['./account.component.scss'],
 })
 export class AccountComponent implements OnInit {
   currentAccountData!: CurrentAccountDataDTO;
   show = false;
   amount!: number; // monto a cargar
 
-
   constructor(
     private userService: UserService,
-    private tokenService: TokenService,
+    private tokenService: TokenService
   ) {}
 
   ngOnInit(): void {
@@ -26,32 +25,36 @@ export class AccountComponent implements OnInit {
   }
 
   //obtenemos los datos del usuario + su cuenta corriente.
-  public loadUserData(){
-    this.userService.getData(this.tokenService.getUsername()!).subscribe((data : any) => {
-      this.currentAccountData = new CurrentAccountDataDTO(data.name,data.username,data.email,data.currentAccount);
+  public loadUserData() {
+    this.userService.getData().subscribe((data: any) => {
+      this.currentAccountData = new CurrentAccountDataDTO(
+        data.name,
+        data.username,
+        data.email,
+        data.currentAccount
+      );
     });
   }
 
-  //los metodos debitar y cargar deberian ser implementados en un service para cuenta corriente. 
-  public chargeBalance(){
-    if(+this.amount < 0){
+  //los metodos debitar y cargar deberian ser implementados en un service para cuenta corriente.
+  public chargeBalance() {
+    if (+this.amount < 0) {
       this.errorNegativeAmount();
-    }else{
-      if(this.amount == undefined){
-        this. errorInputEmpty();
-      }else{
-        if(this.amount < 100){
-          this.errorMinAmount()
-        }else{
+    } else {
+      if (this.amount == undefined) {
+        this.errorInputEmpty();
+      } else {
+        if (this.amount < 100) {
+          this.errorMinAmount();
+        } else {
           this.succesfulCharge();
         }
-        
       }
-    }  
-}
+    }
+  }
 
-  public succesfulCharge(){
-    //Si se presiona aceptar entonces se realiza la carga del saldo. 
+  public succesfulCharge() {
+    //Si se presiona aceptar entonces se realiza la carga del saldo.
     //sino se cancela la operacion.
     Swal.fire({
       title: 'Cargando saldo',
@@ -59,38 +62,45 @@ export class AccountComponent implements OnInit {
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar'
-    }).then((result)=> {
-      if (result.value){
-        let currentAccount = new CurrentAccount(+this.amount,this.currentAccountData.currentAccount.phone);
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.value) {
+        let currentAccount = new CurrentAccount(
+          +this.amount,
+          this.currentAccountData.currentAccount.phone
+        );
         currentAccount.id = this.currentAccountData.currentAccount.id;
-        this.userService.chargeBalance(currentAccount).subscribe(data => {
-          this.show = false;
-          window.location.reload();
-        },
-        err => {
-          Swal.fire({
-            width: 350,
-            icon: 'error',
-            title: err.error.errors[err.error.errors.length-1],
-            showConfirmButton: false,
-            timer: 2500,
-          })
-        }
+        this.userService.chargeBalance(currentAccount).subscribe(
+          (data) => {
+            this.show = false;
+            window.location.reload();
+          },
+          (err) => {
+            Swal.fire({
+              width: 350,
+              icon: 'error',
+              title: err.error.errors[err.error.errors.length - 1],
+              showConfirmButton: false,
+              timer: 2500,
+            });
+          }
         );
       }
-    }) 
+    });
   }
 
- private errorNegativeAmount(){
-    Swal.fire('El monto ingresado es invalido', 'Debe ingresar un monto mayor a 0')
+  private errorNegativeAmount() {
+    Swal.fire(
+      'El monto ingresado es invalido',
+      'Debe ingresar un monto mayor a 0'
+    );
   }
 
-  private errorInputEmpty(){
-    Swal.fire('El monto ingresado es invalido', 'Debe ingresar un monto')
+  private errorInputEmpty() {
+    Swal.fire('El monto ingresado es invalido', 'Debe ingresar un monto');
   }
 
-  private errorMinAmount(){
-    Swal.fire('El monto ingresado es invalido', 'El monto minimo es de $100')
+  private errorMinAmount() {
+    Swal.fire('El monto ingresado es invalido', 'El monto minimo es de $100');
   }
 }

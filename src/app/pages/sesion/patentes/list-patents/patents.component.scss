@@ -1,7 +1,16 @@
-body{
+body {
   background-color: #dad6d65d;
 }
-.containerVacio{
+h1 {
+  font-size: 2rem;
+}
+h2 {
+  font-size: 1.5rem;
+}
+h3 {
+  font-size: 1rem;
+}
+.containerVacio {
   text-align: center;
   background: rgba(255, 255, 255, 0.9);
   padding-top: 30px;
@@ -10,11 +19,11 @@ body{
   border-top: 4px solid #3fbbc0;
 }
 
-.cardPatenteIniciada{
-    text-align: -webkit-center;
-    list-style-position: inside;
-    inline-size: min-content;
-        margin-left: 49%;
-    position: absolute;
-    margin-top: 2%;
+.cardPatenteIniciada {
+  text-align: -webkit-center;
+  list-style-position: inside;
+  inline-size: min-content;
+  margin-left: 49%;
+  position: absolute;
+  margin-top: 2%;
 }

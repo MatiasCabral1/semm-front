@@ -1,61 +1,50 @@
 import { Injectable } from '@angular/core';
 
 const TOKEN_KEY = 'AuthToken';
-const NOMBRE_KEY = 'AuthNombreUser';
-const USERNAME_KEY = 'AuthUserName';
-const AUTHORITIES_KEY= 'AuthAuthorities';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TokenService {
-
   roles: Array<string> = [];
 
-  constructor() { }
+  constructor() {}
 
-  public setToken(token: string):void{
-    window.sessionStorage.removeItem(TOKEN_KEY);
-    window.sessionStorage.setItem(TOKEN_KEY,token);
-  }
-
-  public setName(name: string):void{
-    window.sessionStorage.removeItem(NOMBRE_KEY);
-    window.sessionStorage.setItem(NOMBRE_KEY,name);
-  }
-  public getName():string | null{
-    return sessionStorage.getItem(NOMBRE_KEY);
+  public setToken(token: string): void {
+    window.localStorage.removeItem(TOKEN_KEY);
+    window.localStorage.setItem(TOKEN_KEY, token);
   }
 
   public getToken(): string | null {
-    return sessionStorage.getItem(TOKEN_KEY);
-  }
-  public setUsername(username: string): void {
-    window.sessionStorage.removeItem(USERNAME_KEY);
-    window.sessionStorage.setItem(USERNAME_KEY, username);
+    return localStorage.getItem(TOKEN_KEY);
   }
 
-  public getUsername(): string | null{
-    return sessionStorage.getItem(USERNAME_KEY);
-  }
-
-  public setAuthorities(authorities: string[]): void {
-    window.sessionStorage.removeItem(AUTHORITIES_KEY);
-    window.sessionStorage.setItem(AUTHORITIES_KEY, JSON.stringify(authorities));
-  }
-
-  public getAuthorities(): string[] | null {
-   this.roles =  [] ;
-    if (sessionStorage.getItem(AUTHORITIES_KEY)) {
-      JSON.parse(sessionStorage.getItem(AUTHORITIES_KEY)!).forEach( (authority:any) => {
-        this.roles.push(authority.authority);
-      });
+  public getUsername(): string {
+    if (!this.isLogged()) {
+      return ' ';
     }
-    return this.roles;
+    const token = this.getToken()!;
+    const payload = token.split('.')[1];
+    const payloadDecoded = atob(payload);
+    const values = JSON.parse(payloadDecoded);
+    const username = values.sub;
+    return username;
+  }
+
+  public getIdUser(): any {
+    if (!this.isLogged()) {
+      return null;
+    }
+    const token = this.getToken()!;
+    const payload = token.split('.')[1]; //acá estan los datos del usuario
+    const payloadDecoded = atob(payload);
+    const values = JSON.parse(payloadDecoded);
+    const userID = values.jti;
+    return userID;
   }
 
   public logOut(): void {
-    window.sessionStorage.clear();
+    window.localStorage.clear();
   }
 
   public isLogged(): boolean {
@@ -64,5 +53,4 @@ export class TokenService {
     }
     return false;
   }
-  
 }

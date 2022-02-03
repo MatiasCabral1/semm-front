@@ -1,23 +1,40 @@
 <body>
-    <div class="container d-flex justify-content-center">
-      <div class="card">
-          <div class="card-body">
-            <h1>Registro de nueva patente</h1>
-            <form #f="ngForm"  (ngSubmit)="savePatent()" >
-                <div class="form-group">
-                    <label for="number">número de patente</label>
-                    <input type="text" name="number" id="number" class="form-control"
-                    [(ngModel)]="number" required>
-                </div>
-                <div style="padding: 3px;">
-                    <button type="submit" class="btn btn-success" [routerLink]="['/listPatents']" routerLinkActive="router-link-active" [disabled]="!f.valid">Registrar patente
-                 </button>
-                 <button type="button" class="btn btn-danger" (click)="activeModal.close('Close click')">volver
-                </button>
-               
-            </div>    
-            </form>
+  <div class="container d-flex justify-content-center">
+    <div class="card">
+      <div class="card-body">
+        <h1>Registro de nueva patente</h1>
+        <form #f="ngForm" (ngSubmit)="savePatent()">
+          <div class="form-group">
+            <label for="number">número de patente</label>
+            <input
+              type="text"
+              name="number"
+              id="number"
+              class="form-control"
+              [(ngModel)]="number"
+              required
+            />
           </div>
+          <div style="padding: 3px">
+            <button
+              type="submit"
+              class="btn btn-success"
+              [routerLink]="['/listPatents']"
+              routerLinkActive="router-link-active"
+              [disabled]="!f.valid"
+            >
+              Registrar patente
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              (click)="activeModal.close('Close click')"
+            >
+              volver
+            </button>
+          </div>
+        </form>
       </div>
+    </div>
   </div>
 </body>

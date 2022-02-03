@@ -1,80 +1,129 @@
 <app-nav-bar></app-nav-bar>
 
+<div
+  class="container d-flex justify-content-between"
+  *ngIf="show; else emptyList"
+>
+  <table class="table">
+    <h1>Listado de sus patentes registradas</h1>
+    <div class="table">
+      <thead>
+        <tr>
+          <th></th>
+          <th scope="col">
+            <button
+              class="btn btn-lg btn-outline-success"
+              (click)="savePatent()"
+            >
+              <i class="fas fa-plus-circle"></i> Registrar patente
+            </button>
+          </th>
+          <th scope="col">
+            <button
+              class="btn btn-lg btn-outline-success"
+              [routerLink]="['/myAccount']"
+              routerLinkActive="router-link-active"
+            >
+              <i class="fas fa-user-circle"></i> Mi cuenta
+            </button>
+          </th>
+          <th scope="col">Mi saldo $ {{ balance }}</th>
+          <th scope="col"></th>
+        </tr>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Numero de patente</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let h of listPatents | slice: (page - 1) * pageSize:page * pageSize;
+            index as i
+          "
+        >
+          <td>
+            <h3>{{ i + 1 }}</h3>
+          </td>
+          <td>{{ h?.number }}</td>
+          <td>
+            <button
+              class="btn btn-success"
+              (click)="verifyParking(i + 1)"
+              [disabled]="parkingOn"
+            >
+              <i class="fas fa-play-circle"></i> Iniciar estacionamiento
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-danger" (click)="editPatent(i + 1)">
+              <i class="fas fa-edit"></i> Editar
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-danger" (click)="deletePatent(i + 1)">
+              <i class="fas fa-minus-circle"></i> Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
 
+      <ngb-pagination
+        [(page)]="page"
+        [pageSize]="pageSize"
+        [collectionSize]="listPatents.length"
+      >
+      </ngb-pagination>
+    </div>
+  </table>
+  <!-- VENTANA DONDE SE MUESTRA EL BOTON FINALIZAR ESTACIONAMIENTO Y CONTADOR DE TIEMPO TRANSCURRIDO -->
+  <div class="card text-center" style="width: 20rem" *ngIf="parkingOn">
+    <div
+      class="card-body"
+      style="background-color: #dadada; border-style: outset"
+    >
+      <h2 class="card-title">Estacionamiento iniciado</h2>
+      <h3 class="card-subtitle mb-2 text-muted">
+        Recordatorio: Para iniciar un estacionamiento con otra patente primero
+        debe finalizar el actual.
+      </h3>
 
-<div class="container d-flex justify-content-between" *ngIf="show ;else emptyList">
-    
-        <table class="table">
-            <h1>Listado de sus patentes registradas</h1>
-        <div class="table">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th scope="col">
-                        <button class="btn btn-lg btn-outline-success" (click)="savePatent()">Registrar patente</button>
-                    </th>
-                    <th scope="col"> <button class="btn btn-lg btn-outline-success" [routerLink]="['/myAccount']" routerLinkActive="router-link-active">Mi cuenta</button></th>
-                    <th scope="col">Mi saldo ${{balance}}</th>
-                </tr>
-                <tr>
-                <th scope="col">#</th>
-                <th scope="col">Numero de patente</th>
-        
-                </tr>
-            </thead>
-            <tbody >
-                <tr *ngFor="let h of listPatents | slice: (page-1) * pageSize : page * pageSize; index as i">   
-                        <td> <h3>{{i+1}}</h3></td>
-                        <td>{{h?.number}}</td>
-                        <td>
-                            <button class="btn btn-success" (click)= "verifyParking(i+1)" [disabled]="parkingOn">Iniciar estacionamiento</button>
-                        </td>
-                        <td >
-                            <button class="btn btn-danger" (click)="editPatent(i+1)" > Editar</button>
-                        </td>
-                        <td >
-                            <button class="btn btn-danger" (click)="deletePatent(i+1)"> Eliminar</button>
-                        </td>
-                </tr>
-            </tbody>
-            
-            <ngb-pagination 
-            [(page)]="page"
-            [pageSize]="pageSize"
-            [collectionSize]="listPatents.length" >
-            </ngb-pagination>
-        
+      <div class="card content" style="background-color: #aaaaa9">
+        <div>
+          <br />
+          <h3>Patente: <br />{{ TimePrice.patent }}</h3>
+          <h3>
+            Tiempo transcurrido: <br />
+            {{ TimePrice.hours + " " }}hs: {{ TimePrice.minutes + " " }}min
+          </h3>
         </div>
-    </table>
-    <!-- VENTANA DONDE SE MUESTRA EL BOTON FINALIZAR ESTACIONAMIENTO Y CONTADOR DE TIEMPO TRANSCURRIDO -->
-    <div class="card text-center" style="width: 20rem;" *ngIf="parkingOn">
-        <div class="card-body">
-          <h2 class="card-title">Estacionamiento iniciado</h2>
-          <h3 class="card-subtitle mb-2 text-muted">Recordatorio: Para iniciar un estacionamiento con otra patente primero debe finalizar el actual.</h3>
-          
-          <div class="content">
-            <div>
-                <h2>Tiempo transcurrido: <br> {{TimePrice.hours + " "}}hs: {{TimePrice.minutes+ " "}}min</h2>
-                </div>
-                <div >
-                 <h2> Total a pagar: <br> ${{TimePrice.price}}<br></h2>
-                 </div>
-          </div>
-             <button class="btn btn-danger" (click)= "verifyParking(1)" [disabled]="!parkingOn">Finalizar estacionamiento </button>
+        <div>
+          <h3>
+            Total a pagar: <br />
+            ${{ TimePrice.price }}<br />
+          </h3>
+          <br />
         </div>
+        <button
+          class="btn btn-danger"
+          (click)="verifyParking(-1)"
+          [disabled]="!parkingOn"
+        >
+          <i class="fas fa-stop-circle"></i> Finalizar
+        </button>
       </div>
-    
+    </div>
+  </div>
 </div>
 
 <ng-template #emptyList>
-    <div class="containerVacio">
-      <h1> No hay patentes registradas.</h1>
-      <p>Registre una patente para administrar su estacionamiento.</p>
-      <ng-container matColumnDef="registrar">
-        <button class="btn btn-lg btn-outline-success" (click)="savePatent()">Registrar patente</button>
+  <div class="containerVacio">
+    <h1>No hay patentes registradas.</h1>
+    <p>Registre una patente para administrar su estacionamiento.</p>
+    <ng-container matColumnDef="registrar">
+      <button class="btn btn-lg btn-outline-success" (click)="savePatent()">
+        Registrar patente
+      </button>
     </ng-container>
-    </div>
-  </ng-template>
-
-
-    
+  </div>
+</ng-template>
