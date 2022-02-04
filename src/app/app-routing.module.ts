@@ -14,7 +14,6 @@ const routes: Routes = [
     path: 'sesion',
     loadChildren: () =>
       import('./pages/sesion/index/sesion.module').then((m) => m.SesionModule),
-    canActivate: [ProdGuardService],
   },
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [LoginGuard] },

@@ -16,7 +16,6 @@ export class SesionComponent implements OnInit {
   }
   public refreshSession() {
     this.userService.getData().subscribe((data) => {
-      console.log('contenido traido del usuario en nav-var: ', data);
       this.name = data.name;
     });
   }

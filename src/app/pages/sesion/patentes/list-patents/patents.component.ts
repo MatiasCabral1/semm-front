@@ -111,7 +111,6 @@ export class PatentsComponent implements OnInit {
             window.location.reload();
           },
           (err) => {
-            console.log('error: ', err);
             this.errorEndParking(err.error.mensaje);
           }
         );
@@ -131,7 +130,6 @@ export class PatentsComponent implements OnInit {
 
   deletePatent(row: number) {
     let patent = this.listPatents[row - 1];
-    console.log('patente: ', patent);
     this.patentService.delete(patent.id).subscribe(
       (data) => {
         this.alertDelete(data.mensaje);
@@ -150,14 +148,12 @@ export class PatentsComponent implements OnInit {
     this.parkingService
       .getParkingStartedByUser(idUser)
       .subscribe((data: boolean) => {
-        console.log('resultado de la consulta: ', data);
         if (data) {
           clearInterval(this.interval);
           this.interval = setInterval(() => this.getTimePrice(), 60000);
           this.parkingService
             .getTime(idUser)
             .subscribe((data: TimePriceDTO) => {
-              console.log('contenido de getHora: ', data);
               this.TimePrice.hours = data.hours;
               this.TimePrice.minutes = data.minutes;
               this.TimePrice.price = data.price;
@@ -171,7 +167,6 @@ export class PatentsComponent implements OnInit {
   //obtenemos la cuenta corriente del usuario y seteamos nuestra variable "this.saldo" con "cuentaCorriente.saldo"
   getBalance(): void {
     this.userService.getCurrentAccount().subscribe((data: any) => {
-      console.log(data);
       this.balance = data.balance;
     });
   }
@@ -217,7 +212,6 @@ export class PatentsComponent implements OnInit {
   //editarPatente
   editPatent(row: number) {
     let patent = this.listPatents[row - 1];
-    console.log('patente a editar previa a envio: ', patent);
     const modalRef = this.modalService.open(EditPatentComponent);
     modalRef.componentInstance.patent = patent;
   }

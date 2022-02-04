@@ -33,7 +33,6 @@ export class RegisterPatentComponent implements OnInit {
       );
       this.patentService.create(this.newPatent).subscribe(
         (data: any) => {
-          console.log('patente registrada: ', this.newPatent);
           this.notifySave();
         },
         (err) => {
@@ -71,7 +70,6 @@ export class RegisterPatentComponent implements OnInit {
   }
 
   errorSave(mensaje: string) {
-    console.log(mensaje);
     Swal.fire({
       width: 350,
       icon: 'error',

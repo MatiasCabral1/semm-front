@@ -16,7 +16,6 @@ export class UserService {
   constructor(private http: HttpClient, private tokenService: TokenService) {}
 
   public getPatents(): Observable<Patent> {
-    console.log('contenido de userID token: ', this.tokenService.getIdUser());
     return this.http.get<Patent>(
       this.url + '/patents/' + this.tokenService.getIdUser()
     );

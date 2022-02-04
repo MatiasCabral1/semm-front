@@ -32,7 +32,6 @@ export class PatentService {
   }
 
   update(patent: Patent): Observable<Patent> {
-    console.log('contenido de patente en service: ', patent);
     return this.http.put<Patent>(this.patentURL + '/' + patent.id, patent);
   }
 }

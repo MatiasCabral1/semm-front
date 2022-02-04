@@ -11,11 +11,7 @@ import { UserService } from 'src/app/service/User.Service';
 export class NavBarComponent implements OnInit {
   isLogged = false;
 
-  constructor(
-    private tokenService: TokenService,
-    private router: Router,
-    private userService: UserService
-  ) {}
+  constructor(private tokenService: TokenService, private router: Router) {}
 
   ngOnInit() {
     this.setDataSession();

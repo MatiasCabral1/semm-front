@@ -58,8 +58,5 @@ export class LoginComponent implements OnInit {
   }
   setUserData(data: any) {
     this.tokenService.setToken(data.token);
-    //this.userService.getUserByUsername().subscribe(data =>{
-    //console.log("contenido de data: ", data);
-    //});
   }
 }

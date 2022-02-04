@@ -30,11 +30,6 @@ export class EditPatentComponent implements OnInit {
     this.findById();
   }
   editPatent() {
-    console.log(this.number);
-    console.log(this.patent.number);
-    //if(this.number == this.patent.number){
-    //Swal.fire('No se ha realizado ningun cambio','','info')
-    //}else{
     if (this.validateExpression(this.number)) {
       this.patent.number = this.namePatent;
       let patenteEdit = new Patent(
@@ -47,7 +42,6 @@ export class EditPatentComponent implements OnInit {
           this.notificacionSaved();
         },
         (err) => {
-          console.log('error de editado: ', err);
           this.errorEdit(err.error.mensaje);
         }
       );
@@ -61,7 +55,6 @@ export class EditPatentComponent implements OnInit {
   findById() {
     this.patentService.get(this.patent.id).subscribe({
       next: (data: Patent) => {
-        console.log('dato de la patente obtenida: ', data);
         this.namePatent = data.number;
         this.patent = data;
       },
