@@ -5,9 +5,11 @@
       <div class="card-body" style="text-align-last: center">
         <div class="container elements">
           <div class="card" style="background-color: #f3f4f4">
-            <h1 style="color: #007bff">Bienvenido <br />{{ name }}</h1>
+            <h1 style="color: #007bff">
+              {{ "index.html.welcome" | translate }} <br />{{ name }}
+            </h1>
           </div>
-          <h1 class="titulo mt-3">Sistema de estacionamiento</h1>
+          <h1 class="titulo mt-3">{{ "index.html.title" | translate }}</h1>
           <p class="lead">
             What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
             printing and typesetting industry. Lorem Ipsum has been the
@@ -22,7 +24,8 @@
             [routerLink]="['/myAccount']"
             routerLinkActive="router-link-active"
           >
-            <i class="fas fa-user-circle"></i> Mi Cuenta
+            <i class="fas fa-user-circle"></i>
+            {{ "index.html.button.my_account" | translate }}
           </button>
           <button
             type="submit"
@@ -30,7 +33,8 @@
             [routerLink]="['/listPatents']"
             routerLinkActive="router-link-active"
           >
-            <i class="fas fa-tasks"></i> Gestionar estacionamiento
+            <i class="fas fa-tasks"></i>
+            {{ "index.html.button.manage_parking" | translate }}
           </button>
         </div>
       </div>

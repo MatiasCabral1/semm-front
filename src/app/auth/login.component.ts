@@ -4,7 +4,6 @@ import Swal from 'sweetalert2';
 import { LoginUser } from '../models/LoginUser';
 import { AuthService } from '../service/auth.service';
 import { TokenService } from '../service/token.service';
-import { UserService } from '../service/User.Service';
 
 @Component({
   selector: 'app-login',

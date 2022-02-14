@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { SesionComponent } from './pages/sesion/index/sesion.component';
 
@@ -20,7 +20,12 @@ import { HistoryComponent } from './pages/sesion/historial/history.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditPatentComponent } from './pages/sesion/patentes/edit-patent/edit-patent.component';
 import { RegisterPatentComponent } from './pages/sesion/patentes/registrar-patente/register-patent.component';
-
+import { InternationalizationModule } from './internationalization/internationalization.module';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, '../assets/locales/', '.json');
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,6 +47,14 @@ import { RegisterPatentComponent } from './pages/sesion/patentes/registrar-paten
     BrowserAnimationsModule,
     CommonModule,
     NgbModule,
+    InternationalizationModule.forRoot({ locale_id: 'en' }), // iniating with default language: en-US
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
   ],
   providers: [AuthInterceptorServiceProvider],
   bootstrap: [AppComponent],

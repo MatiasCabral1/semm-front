@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { LocalizationService } from 'src/app/internationalization/localization.service';
 import { CurrentAccount } from 'src/app/models/CurrentAccount';
 import { CurrentAccountDataDTO } from 'src/app/models/DTOCurrentAccountData';
-import { TokenService } from 'src/app/service/token.service';
 import { UserService } from 'src/app/service/User.Service';
 import Swal from 'sweetalert2';
 
@@ -17,7 +17,7 @@ export class AccountComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private tokenService: TokenService
+    private localService: LocalizationService
   ) {}
 
   ngOnInit(): void {
@@ -57,8 +57,17 @@ export class AccountComponent implements OnInit {
     //Si se presiona aceptar entonces se realiza la carga del saldo.
     //sino se cancela la operacion.
     Swal.fire({
-      title: 'Cargando saldo',
-      text: 'Usted cargará $' + this.amount + ' a su cuenta',
+      title: this.localService.translate(
+        'account.component.alert.successfull_charge.title'
+      ),
+      text:
+        this.localService.translate(
+          'account.component.alert.successfull_charge.text_start'
+        ) +
+        this.amount +
+        this.localService.translate(
+          'account.component.alert.successfull_charge.text_end'
+        ),
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Aceptar',
@@ -90,17 +99,33 @@ export class AccountComponent implements OnInit {
   }
 
   private errorNegativeAmount() {
+    console.log(
+      this.localService.translate('account.component.alert.error_amount_title')
+    );
     Swal.fire(
-      'El monto ingresado es invalido',
-      'Debe ingresar un monto mayor a 0'
+      this.localService.translate('account.component.alert.error_amount_title'),
+      this.localService.translate(
+        'account.component.alert.error.negative_amount'
+      ),
+      'info'
     );
   }
 
   private errorInputEmpty() {
-    Swal.fire('El monto ingresado es invalido', 'Debe ingresar un monto');
+    Swal.fire(
+      this.localService.translate('account.component.alert.error_amount_title'),
+      this.localService.translate('account.component.alert.error.non_amount'),
+      'info'
+    );
   }
 
   private errorMinAmount() {
-    Swal.fire('El monto ingresado es invalido', 'El monto minimo es de $100');
+    Swal.fire(
+      this.localService.translate('account.component.alert.error_amount_title'),
+      this.localService.translate(
+        'account.component.alert.error.minimum_amount'
+      ),
+      'info'
+    );
   }
 }

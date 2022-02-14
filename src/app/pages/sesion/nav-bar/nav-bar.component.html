@@ -23,22 +23,26 @@
     <ul class="navbar-nav ml-auto">
       <li class="nav-item" *ngIf="isLogged">
         <a class="nav-link" routerLink="/sesion"
-          ><i class="fas fa-home"></i> Inicio</a
+          ><i class="fas fa-home"></i>
+          {{ "nav_bar.html.a.home" | translate }}</a
         >
       </li>
       <li class="nav-item" *ngIf="isLogged">
         <a class="nav-link" routerLink="/listPatents"
-          ><i class="far fa-list-alt"></i> Gestionar estacionamiento</a
+          ><i class="far fa-list-alt"></i>
+          {{ "nav_bar.html.a.manage_parking" | translate }}</a
         >
       </li>
       <li class="nav-item" *ngIf="!isLogged">
         <a class="nav-link" routerLink="/login"
-          ><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</a
+          ><i class="fas fa-sign-in-alt"></i>
+          {{ "nav_bar.html.a.login" | translate }}</a
         >
       </li>
       <li class="nav-item" *ngIf="isLogged" (click)="onLogOut()">
         <a class="nav-link" style="cursor: pointer"
-          ><i class="fas fa-door-open"></i> Cerrar Sesión</a
+          ><i class="fas fa-door-open"></i>
+          {{ "nav_bar.html.a.logout" | translate }}</a
         >
       </li>
     </ul>

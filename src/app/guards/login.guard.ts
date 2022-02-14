@@ -16,7 +16,8 @@ export class LoginGuard implements CanActivate {
   constructor(private tokenService: TokenService, private router: Router) {}
   canActivate(): boolean {
     if (this.tokenService.isLogged()) {
-      this.router.navigate(['/sesion']);
+      this.tokenService.logOut();
+      this.router.navigate(['/']);
       return false;
     }
     return true;

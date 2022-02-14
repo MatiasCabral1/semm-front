@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { LocalizationService } from 'src/app/internationalization/localization.service';
 import { Patent } from 'src/app/models/Patent';
 import { PatentService } from 'src/app/service/Patent.service';
 import { TokenService } from 'src/app/service/token.service';
@@ -22,7 +23,8 @@ export class EditPatentComponent implements OnInit {
   constructor(
     private patentService: PatentService,
     public activeModal: NgbActiveModal,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private localService: LocalizationService
   ) {}
 
   ngOnInit(): void {
@@ -85,8 +87,12 @@ export class EditPatentComponent implements OnInit {
 
   errorExpressionNotification() {
     Swal.fire(
-      'El formato ingresado es invalido',
-      'Ejemplos de formatos aceptados: "AAA999" - "AA000AA"',
+      this.localService.translate(
+        'patent.edit.component.alert.error.expression.title'
+      ),
+      this.localService.translate(
+        'patent.edit.component.alert.error.expression.text'
+      ),
       'error'
     );
   }
@@ -103,7 +109,7 @@ export class EditPatentComponent implements OnInit {
     Swal.fire({
       width: 350,
       icon: 'success',
-      title: 'patente editada correctamente',
+      title: this.localService.translate('patent.edit.component.alert.sucess'),
       showConfirmButton: true,
     }).then((result) => {
       if (result.value) {

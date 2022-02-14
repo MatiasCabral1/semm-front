@@ -5,17 +5,17 @@
     [routerLink]="['/myAccount']"
     routerLinkActive="router-link-active"
   >
-    Mi cuenta
+    {{ "history.html.button.my_account" | translate }}
   </button>
   <table class="table">
     <thead>
       <tr>
         <th scope="col">#</th>
 
-        <th scope="col">Tipo de operacion</th>
-        <th scope="col">Monto</th>
-        <th scope="col">Saldo</th>
-        <th scope="col">Fecha y hora de inicio</th>
+        <th scope="col">{{ "history.html.table.type" | translate }}</th>
+        <th scope="col">{{ "history.html.table.amount" | translate }}</th>
+        <th scope="col">{{ "history.html.table.balance" | translate }}</th>
+        <th scope="col">{{ "history.html.table.date_time" | translate }}</th>
       </tr>
     </thead>
     <tbody>

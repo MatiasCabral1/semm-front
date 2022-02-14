@@ -10,6 +10,7 @@ import { UserService } from 'src/app/service/User.Service';
 import Swal from 'sweetalert2';
 import { EditPatentComponent } from '../edit-patent/edit-patent.component';
 import { RegisterPatentComponent } from '../registrar-patente/register-patent.component';
+import { LocalizationService } from 'src/app/internationalization/localization.service';
 
 @Component({
   selector: 'app-patents',
@@ -37,7 +38,8 @@ export class PatentsComponent implements OnInit {
     private parkingService: ParkingService,
     private tokenService: TokenService,
     private patentService: PatentService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private localService: LocalizationService
   ) {}
 
   ngOnInit(): void {
@@ -96,12 +98,20 @@ export class PatentsComponent implements OnInit {
   //se invoca a la funcion "finalizar estacionamiento" del backend.
   endParking(): void {
     Swal.fire({
-      title: 'Finalizando estacionamiento',
-      text: 'Esta seguro que desea finalizar el estacionamiento?',
+      title: this.localService.translate(
+        'patent.list.component.alert.text_end_parking.title'
+      ),
+      text: this.localService.translate(
+        'patent.list.component.alert.text_end_parking.text'
+      ),
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Aceptar',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: this.localService.translate(
+        'patent.list.component.alert.text_end_parking.button.accept'
+      ),
+      cancelButtonText: this.localService.translate(
+        'patent.list.component.alert.text_end_parking.button.cancel'
+      ),
     }).then((result) => {
       if (result.value) {
         this.parkingService.endParking(this.tokenService.getIdUser()).subscribe(
@@ -111,6 +121,7 @@ export class PatentsComponent implements OnInit {
             window.location.reload();
           },
           (err) => {
+            console.log(err.error.mensaje);
             this.errorEndParking(err.error.mensaje);
           }
         );
@@ -174,7 +185,9 @@ export class PatentsComponent implements OnInit {
   // alertas y notificaciones de sweetAlert2
   errorStartParking(mensaje: string) {
     Swal.fire({
-      title: 'No se inicio el estacionamiento',
+      title: this.localService.translate(
+        'patent.list.component.alert.error.start_parking'
+      ),
       text: mensaje,
       icon: 'warning',
     });
@@ -182,14 +195,18 @@ export class PatentsComponent implements OnInit {
 
   errorEndParking(mensaje: string) {
     Swal.fire({
-      title: 'No pudo finalizar el estacionamiento',
+      title: this.localService.translate(
+        'patent.list.component.alert.error.end_parking'
+      ),
       text: mensaje,
       icon: 'warning',
     });
   }
   errorDelete(mensaje: string) {
     Swal.fire({
-      title: 'No se puede eliminar la patente',
+      title: this.localService.translate(
+        'patent.list.component.alert.error.delete_patent'
+      ),
       text: mensaje,
       icon: 'warning',
     });

@@ -1,0 +1,187 @@
+{
+    "nav_bar": {
+        "html": {
+            "a": {
+                "home": "Home",
+                "manage_parking": "Manage parking",
+                "login": "Login",
+                "logout": "Logout"
+            }
+        }
+    },
+    "login":{
+        "component":{
+            "error_login": "Login Fail"
+        }
+        ,
+        "a": {
+            "login": "Login",
+            "register": "Register"
+        },
+        "model":{
+            "phone": "Phone",
+            "password": "Password"
+        },
+        "alert":{
+            "error-html": "Login failed"
+        }
+    },
+    "register":{
+        "a":{
+            "login": "Login",
+            "create-account":"Create account"
+        },
+        "model":{
+            "name": "Name",
+            "password": "Password",
+            "phone": "Phone",
+            "email": "Email"
+        },
+        "alert":{
+            "phone": "Enter a phone number without 0 and 15"
+        }
+    },
+    "account": {
+        "component": {
+            "alert": {
+                "error_amount_title": "The amount entered is invalid",
+                "error": {
+                    "negative_amount": "You must enter an amount greater than 0",
+                    "non_amount": "You must enter an amount",
+                    "minimum_amount": "The minumum amount is $100"
+                },
+                "successfull_charge":{
+                    "title": "Updating balance",
+                    "text_start":"You will charge $",
+                    "text_end": " to your account"
+                }
+            }
+        },
+        "html": {
+            "data": {
+                "title": "My information",
+                "name": "Name",
+                "phone": "Phone",
+                "email": "Email"
+            },
+            "account_data": {
+                "title": "My account",
+                "current_balance": "Current balance"
+            },
+            "button": {
+                "charge": "Charge",
+                "history": "History",
+                "accept": "Accept",
+                "cancel": "Cancel"
+            },
+            "alert": {
+                "account_empty": "Has not loaded balance yet",
+                "enter_amount": "Enter an amount"
+            }
+        }
+    },
+    "index": {
+        "html": {
+            "welcome": "Welcome",
+            "title": "Parking system",
+            "button": {
+                "my_account": "My account",
+                "manage_parking": "Manage parking"
+            }
+        }
+    },
+    "history": {
+        "html": {
+            "button": {
+                "my_account": "My account"
+            },
+            "table": {
+                "type": "Operation",
+                "amount": "Amount",
+                "balance": "Balance",
+                "date_time": "Start date and time"
+            }
+        }
+    },
+    "patent": {
+        "list": {
+            "component": {
+                "alert": {
+                    "error": {
+                        "start_parking": "Parking could not be started",
+                        "end_parking": "Parking could not be completed",
+                        "delete_patent": "Patent cannot be removed"
+                    },
+                    "text_end_parking": {
+                        "title": "Ending parking lot",
+                        "text": "Are you sure you want to end parking?",
+                        "button": {
+                            "accept": "Accept",
+                            "cancel": "Cancel"
+                        }
+                    }
+                }
+            },
+            "html": {
+                "title": "Their patents",
+                "button": {
+                    "register": "Register patent",
+                    "my_account": "My account",
+                    "start_parking": "Start parking",
+                    "end_parking": "End parking",
+                    "edit": "Edit",
+                    "delete": "Delete"
+                },
+                "table": {
+                    "patent_number": "Patent number",
+                    "my_balance": "My balance"
+                },
+                "text": {
+                    "parking_started": "Parking started",
+                    "reminder": "Reminder: To start a parking with another patent you must first finish the current one.",
+                    "patent_started": "Patent",
+                    "time_elapsed_started": "Time elapsed",
+                    "total_pay_started": "Total to pay"
+                }
+            }
+        },
+        "edit": {   
+            "component": {
+                "alert": {
+                    "error": {
+                        "expression": {
+                            "title": "The entered format is invalid",
+                            "text": "Example of accepted formats: 'AAA999' - 'AA000AA'"
+                    },
+                    "success": "Patent edit correctly"
+                }
+                }
+            }, 
+            "title": "Edit patent",
+            "form": {
+                "number": "Patent number",
+                "button": {
+                    "edit": "Edit patent",
+                    "cancel": "Cancel"
+                }
+            }
+        },
+        "register": {
+            "component": {
+                "alert": {
+                    "success": "Successfully registered patent"
+                }
+            },
+            "html": {
+                "title": "New patent",
+                "form": {
+                    "number": "Number",
+                    "button": {
+                        "accept": "Save patent",
+                        "cancel": "Cancel"
+                    }
+                }
+            }
+        }
+    }
+}

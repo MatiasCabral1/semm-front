@@ -5,7 +5,7 @@
   *ngIf="show; else emptyList"
 >
   <table class="table">
-    <h1>Listado de sus patentes registradas</h1>
+    <h1>{{ "patent.list.html.title" | translate }}</h1>
     <div class="table">
       <thead>
         <tr>
@@ -15,7 +15,8 @@
               class="btn btn-lg btn-outline-success"
               (click)="savePatent()"
             >
-              <i class="fas fa-plus-circle"></i> Registrar patente
+              <i class="fas fa-plus-circle"></i>
+              {{ "patent.list.html.button.register" | translate }}
             </button>
           </th>
           <th scope="col">
@@ -24,15 +25,20 @@
               [routerLink]="['/myAccount']"
               routerLinkActive="router-link-active"
             >
-              <i class="fas fa-user-circle"></i> Mi cuenta
+              <i class="fas fa-user-circle"></i>
+              {{ "patent.list.html.button.my_account" | translate }}
             </button>
           </th>
-          <th scope="col">Mi saldo $ {{ balance }}</th>
+          <th scope="col">
+            {{ "patent.list.html.table.my_balance" | translate }} ${{ balance }}
+          </th>
           <th scope="col"></th>
         </tr>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Numero de patente</th>
+          <th scope="col">
+            {{ "patent.list.html.table.patent_number" | translate }}
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -52,17 +58,20 @@
               (click)="verifyParking(i + 1)"
               [disabled]="parkingOn"
             >
-              <i class="fas fa-play-circle"></i> Iniciar estacionamiento
+              <i class="fas fa-play-circle"></i>
+              {{ "patent.list.html.button.start_parking" | translate }}
             </button>
           </td>
           <td>
             <button class="btn btn-danger" (click)="editPatent(i + 1)">
-              <i class="fas fa-edit"></i> Editar
+              <i class="fas fa-edit"></i>
+              {{ "patent.list.html.button.edit" | translate }}
             </button>
           </td>
           <td>
             <button class="btn btn-danger" (click)="deletePatent(i + 1)">
-              <i class="fas fa-minus-circle"></i> Eliminar
+              <i class="fas fa-minus-circle"></i>
+              {{ "patent.list.html.button.delete" | translate }}
             </button>
           </td>
         </tr>
@@ -82,24 +91,30 @@
       class="card-body"
       style="background-color: #dadada; border-style: outset"
     >
-      <h2 class="card-title">Estacionamiento iniciado</h2>
+      <h2 class="card-title">
+        {{ "patent.list.html.text.parking_started" | translate }}
+      </h2>
       <h3 class="card-subtitle mb-2 text-muted">
-        Recordatorio: Para iniciar un estacionamiento con otra patente primero
-        debe finalizar el actual.
+        {{ "patent.list.html.text.reminder" | translate }}
       </h3>
 
       <div class="card content" style="background-color: #aaaaa9">
         <div>
           <br />
-          <h3>Patente: <br />{{ TimePrice.patent }}</h3>
           <h3>
-            Tiempo transcurrido: <br />
+            {{ "patent.list.html.text.patent_started" | translate }}: <br />{{
+              TimePrice.patent
+            }}
+          </h3>
+          <h3>
+            {{ "patent.list.html.text.time_elapsed_started" | translate }}:
+            <br />
             {{ TimePrice.hours + " " }}hs: {{ TimePrice.minutes + " " }}min
           </h3>
         </div>
         <div>
           <h3>
-            Total a pagar: <br />
+            {{ "patent.list.html.text.total_pay_started" | translate }}: <br />
             ${{ TimePrice.price }}<br />
           </h3>
           <br />
@@ -109,7 +124,8 @@
           (click)="verifyParking(-1)"
           [disabled]="!parkingOn"
         >
-          <i class="fas fa-stop-circle"></i> Finalizar
+          <i class="fas fa-stop-circle"></i>
+          {{ "patent.list.html.button.end_parking" | translate }}
         </button>
       </div>
     </div>
@@ -122,7 +138,7 @@
     <p>Registre una patente para administrar su estacionamiento.</p>
     <ng-container matColumnDef="registrar">
       <button class="btn btn-lg btn-outline-success" (click)="savePatent()">
-        Registrar patente
+        {{ "patent.list.html.button.register" | translate }}
       </button>
     </ng-container>
   </div>
