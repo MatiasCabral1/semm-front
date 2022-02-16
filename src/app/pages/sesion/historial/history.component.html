@@ -29,13 +29,19 @@
           <h3>{{ i + 1 }}</h3>
         </td>
         <td>{{ h?.typeTransaction }}</td>
-        <td *ngIf="h?.typeTransaction == 'Consumo'; else tdcarga">
+        <td
+          *ngIf="
+            h?.typeTransaction == 'Consumo' ||
+              h?.typeTransaction == 'Consumption';
+            else tdcarga
+          "
+        >
           -${{ h?.amount }}
         </td>
         <ng-template #tdcarga>
           <td #tdcarga>+ ${{ h?.amount }}</td>
         </ng-template>
-        <td>${{ h?.currentAccount?.balance }}</td>
+        <td>${{ h?.balance }}</td>
         <td>{{ h?.dateTransaction }}</td>
       </tr>
     </tbody>

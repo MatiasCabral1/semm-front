@@ -3,9 +3,9 @@ import { CurrentAccount } from './CurrentAccount';
 export class History {
   dateTransaction!: string;
   typeTransaction!: string;
-  balance!: number;
   currentAccount!: CurrentAccount;
   amount!: number;
+  balance: number;
   constructor(
     dateTransaction: string,
     typeTransaction: string,
@@ -15,8 +15,8 @@ export class History {
   ) {
     this.dateTransaction = dateTransaction;
     this.typeTransaction = typeTransaction;
-    this.balance = balance;
     this.currentAccount = currentAccount;
     this.amount = amount;
+    this.balance = balance;
   }
 }

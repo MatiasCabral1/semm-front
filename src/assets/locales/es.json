@@ -2,16 +2,16 @@
     "nav_bar": {
         "html": {
             "a": {
-                "home": "Home",
-                "manage_parking": "Manage parking",
-                "login": "Login",
-                "logout": "Logout"
+                "home": "Inicio",
+                "manage_parking": "Administrar estacionamiento",
+                "login": "Iniciar sesion",
+                "logout": "Cerrar sesion"
             }
         }
     },
     "login":{
         "component":{
-            "error_login": "Login Fail"
+            "error_login": "Fallo al iniciar sesion"
         }
         ,
         "a": {
@@ -23,7 +23,7 @@
             "password": "Contraseña"
         },
         "alert":{
-            "error-html": "Login failed"
+            "error-html": "Fallo al iniciar sesion"
         }
     },
     "register":{
@@ -38,45 +38,45 @@
             "email": "Email"
         },
         "alert":{
-            "phone": "Enter a phone number without 0 and 15"
+            "phone": "Ingrese un numero de telefono sin 0 y 15"
         }
     },
     "account": {
         "component": {
             "alert": {
-                "error_amount_title": "The amount entered is invalid",
+                "error_amount_title": "El monto ingresado es invalido",
                 "error": {
-                    "negative_amount": "You must enter an amount greater than 0",
-                    "non_amount": "You must enter an amount",
-                    "minimum_amount": "The minumum amount is $100"
+                    "negative_amount": "Debe ingresar un monto mayor a 0",
+                    "non_amount": "Debe ingresar un monto",
+                    "minimum_amount": "El monto minimo es de $100"
                 },
                 "successfull_charge":{
-                    "title": "Updating balance",
-                    "text_start":"You will charge $",
-                    "text_end": " to your account"
+                    "title": "Actualizando saldo",
+                    "text_start":"Usted cargara $",
+                    "text_end": " a su cuenta"
                 }
             }
         },
         "html": {
             "data": {
-                "title": "My information",
-                "name": "Name",
-                "phone": "Phone",
+                "title": "Mis datos",
+                "name": "Nombre",
+                "phone": "Telefono",
                 "email": "Email"
             },
             "account_data": {
-                "title": "My account",
-                "current_balance": "Current balance"
+                "title": "Mi cuenta",
+                "current_balance": "Saldo actual"
             },
             "button": {
-                "charge": "Charge",
-                "history": "History",
-                "accept": "Accept",
-                "cancel": "Cancel"
+                "charge": "Cargar",
+                "history": "Historial",
+                "accept": "Aceptar",
+                "cancel": "Cancelar"
             },
             "alert": {
-                "account_empty": "Has not loaded balance yet",
-                "enter_amount": "Enter an amount"
+                "account_empty": "Todavia no se ha cargado saldo",
+                "enter_amount": "Ingrese un monto"
             }
         }
     },
@@ -93,13 +93,13 @@
     "history": {
         "html": {
             "button": {
-                "my_account": "My account"
+                "my_account": "Mi cuenta"
             },
             "table": {
-                "type": "Operation",
-                "amount": "Amount",
-                "balance": "Balance",
-                "date_time": "Start date and time"
+                "type": "Operacion",
+                "amount": "Monto",
+                "balance": "Saldo",
+                "date_time": "Fecha y hora"
             }
         }
     },
@@ -108,40 +108,40 @@
             "component": {
                 "alert": {
                     "error": {
-                        "start_parking": "Parking could not be started",
-                        "end_parking": "Parking could not be completed",
-                        "delete_patent": "Patent cannot be removed"
+                        "start_parking": "El estacionamiento no pudo ser iniciado",
+                        "end_parking": "No se pudo finalizar el estacionamiento",
+                        "delete_patent": "No se pudo eliminar la patente"
                     },
                     "text_end_parking": {
-                        "title": "Ending parking lot",
-                        "text": "Are you sure you want to end parking?",
+                        "title": "Finalizando estacionamiento",
+                        "text": "Esta seguro que desea finalizar el estacionamiento?",
                         "button": {
-                            "accept": "Accept",
-                            "cancel": "Cancel"
+                            "accept": "Aceptar",
+                            "cancel": "Cancelar"
                         }
                     }
                 }
             },
             "html": {
-                "title": "Their patents",
+                "title": "Listado de sus patentes",
                 "button": {
-                    "register": "Register patent",
-                    "my_account": "My account",
-                    "start_parking": "Start parking",
-                    "end_parking": "End parking",
-                    "edit": "Edit",
-                    "delete": "Delete"
+                    "register": "Registrar patente",
+                    "my_account": "Mi cuenta",
+                    "start_parking": "Iniciar estacionamiento",
+                    "end_parking": "Finalizar",
+                    "edit": "Editar",
+                    "delete": "Eliminar"
                 },
                 "table": {
-                    "patent_number": "Patent number",
-                    "my_balance": "My balance"
+                    "patent_number": "Numero de patente",
+                    "my_balance": "Mi saldo"
                 },
                 "text": {
-                    "parking_started": "Parking started",
-                    "reminder": "Reminder: To start a parking with another patent you must first finish the current one.",
-                    "patent_started": "Patent",
-                    "time_elapsed_started": "Time elapsed",
-                    "total_pay_started": "Total to pay"
+                    "parking_started": "Estacionamiento iniciado",
+                    "reminder": "Recordatorio: Para iniciar estacionamiento con otra patente primero debe finalizar el actual.",
+                    "patent_started": "Patente",
+                    "time_elapsed_started": "Tiempo transcurrido",
+                    "total_pay_started": "Total a pagar"
                 }
             }
         },
@@ -150,35 +150,35 @@
                 "alert": {
                     "error": {
                         "expression": {
-                            "title": "The entered format is invalid",
-                            "text": "Example of accepted formats: 'AAA999' - 'AA000AA'"
+                            "title": "El formato ingresado es invalido",
+                            "text": "Ejemplos de formatos aceptados: 'AAA999' - 'AA000AA'"
                     },
-                    "success": "Patent edit correctly"
+                    "success": "Patente editada correctamente"
                 }
                 }
             }, 
-            "title": "Edit patent",
+            "title": "Editar patente",
             "form": {
-                "number": "Patent number",
+                "number": "Numero de patente",
                 "button": {
-                    "edit": "Edit patent",
-                    "cancel": "Cancel"
+                    "edit": "Editar patente",
+                    "cancel": "Cancelar"
                 }
             }
         },
         "register": {
             "component": {
                 "alert": {
-                    "success": "Successfully registered patent"
+                    "success": "Patente registrada correctamente"
                 }
             },
             "html": {
-                "title": "New patent",
+                "title": "Nueva patente",
                 "form": {
-                    "number": "Number",
+                    "number": "Numero",
                     "button": {
-                        "accept": "Save patent",
-                        "cancel": "Cancel"
+                        "accept": "Guardar patente",
+                        "cancel": "Cancelar"
                     }
                 }
             }

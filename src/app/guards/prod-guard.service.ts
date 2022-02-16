@@ -10,7 +10,7 @@ export class ProdGuardService {
 
   canActivate(): boolean {
     if (!this.tokenService.isLogged()) {
-      this.router.navigate(['/']);
+      this.router.navigate(['/login']);
       return false;
     }
     return true;

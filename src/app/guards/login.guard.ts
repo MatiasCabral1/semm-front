@@ -1,12 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot,
-  UrlTree,
-} from '@angular/router';
-import { Observable } from 'rxjs';
+import { CanActivate, Router } from '@angular/router';
 import { TokenService } from '../service/token.service';
 
 @Injectable({
@@ -16,8 +9,7 @@ export class LoginGuard implements CanActivate {
   constructor(private tokenService: TokenService, private router: Router) {}
   canActivate(): boolean {
     if (this.tokenService.isLogged()) {
-      this.tokenService.logOut();
-      this.router.navigate(['/']);
+      this.router.navigate(['/sesion']);
       return false;
     }
     return true;

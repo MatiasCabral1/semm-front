@@ -75,7 +75,7 @@
                 "cancel": "Cancel"
             },
             "alert": {
-                "account_empty": "Has not loaded balance yet",
+                "account_empty": "Has not loaded balance",
                 "enter_amount": "Enter an amount"
             }
         }
@@ -99,7 +99,7 @@
                 "type": "Operation",
                 "amount": "Amount",
                 "balance": "Balance",
-                "date_time": "Start date and time"
+                "date_time": "Date and time"
             }
         }
     },

@@ -24,11 +24,17 @@ export class HistoryComponent implements OnInit {
     this.getHistory();
   }
 
+  translate(elem: any) {
+    if (elem.typeTransaction == 'Carga') elem.typeTransaction = 'Credit load';
+    else elem.typeTransaction = 'Consumption';
+  }
   public getHistory() {
     this.userService.getCurrentAccount().subscribe((data: CurrentAccount) => {
-      this.historyService.getByCc(data.id).subscribe((data) => {
-        console.log(data);
+      this.historyService.getByCc(data.id).subscribe((data: History[]) => {
         this.history = data;
+        if (localStorage.getItem('language') == 'en') {
+          this.history.forEach(this.translate);
+        }
       });
     });
   }
